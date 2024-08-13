@@ -6,8 +6,8 @@ require_once('arrayGenerator.php');
 $array = new ArrayGenerator();
 
 $arr = $array->genArray();
-$arr = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610];
-$find = 611;
+$arr = [1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 611, 612];
+$find = 612;
 sort($arr);
 
 echo 'Para o array: <br>';
@@ -18,5 +18,5 @@ $solution = new Solution();
 
 $posicao = $solution->jumpSort($arr, $find);
 
-if ($posicao) echo 'A chave ' . $find . ' está na posição ' . $posicao;
+if ($posicao !== NULL) echo 'A chave ' . $find . ' está na posição ' . $posicao;
     else echo 'A chave ' . $find . ' não está no array.';

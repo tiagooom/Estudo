@@ -4,12 +4,13 @@ class Solution{
     
     public function jumpSort($array, $find)
     {
-        $jumps = (int) sqrt(count($array));
+        $tam = count($array);
+        $jumps = (int) sqrt($tam);
 
         $position = NULL;
         $i = $jumps-1;
         
-        while (!$position && ($i < count($array)))
+        while (!$position && ($i < $tam))
         {
             if ($find <= $array[$i])
             {
@@ -27,6 +28,21 @@ class Solution{
                 break;
             }
             $i += 4;
+        }
+
+        if ((fmod(sqrt($tam), 1)) != 0){ //Se o tamamnho do array nao for um numero inteiro
+
+            $inicio = $i - ($jumps-1);
+
+            for ($i = $inicio ; $i < $tam; $i++)
+            {
+                if ($array[$i] == $find)
+                {
+                    $position = $i;
+                    return $position;
+                } 
+            }
+            
         }
         return $position;
     }
