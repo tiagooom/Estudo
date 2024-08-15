@@ -1,12 +1,14 @@
+
+
 <form method="post">
-    <label for="numero">Digite um número a ser procurado:</label>
+    <label for="chave">Digite a chave a ser procurada:</label>
     <input type="text" id="chave" name="chave">
     <button type="submit">Enviar</button>
-    <button type="submit" name="reset">Resetar</button>
+    <button type="submit" name="reset">Resetar chaves</button>
 </form>
 
 <?php
-
+//Usando jumpsort em um array de UUIDs
 session_start();
 
 require_once('Solution.php');
