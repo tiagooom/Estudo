@@ -1,22 +1,43 @@
+<form method="post">
+    <label for="numero">Digite um número a ser procurado:</label>
+    <input type="text" id="chave" name="chave">
+    <button type="submit">Enviar</button>
+    <button type="submit" name="reset">Resetar</button>
+</form>
+
 <?php
+
+session_start();
 
 require_once('Solution.php');
 require_once('arrayGenerator.php');
 
-$array = new ArrayGenerator();
+if (isset($_POST['reset'])) {
+    unset($_SESSION['arr']);
+}
 
-$arr = $array->genArray();
-$arr = [1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 611, 612];
-$find = 612;
-sort($arr);
+if (!isset($_SESSION['arr'])) {
+    $array = new ArrayGenerator();
 
-echo 'Para o array: <br>';
-foreach ($arr as $value) echo $value . ' ';
+    $teste = $array->genArray();   
+    $_SESSION['arr'] = $array->genArray();   
+    sort($_SESSION['arr']);
+}
+
+$arr = $_SESSION['arr'];
+//$arr = [1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 611, 612];
+echo 'Para as chaves geradas: <br>';
+foreach ($arr as $value) echo $value . '<br>';
 echo '<br><br>';
 
-$solution = new Solution();
+if (isset($_POST['chave']))
+    {
+        $find = $_POST['chave'];            
+        
+        $solution = new Solution();
 
-$posicao = $solution->jumpSort($arr, $find);
+        $posicao = $solution->jumpSort($arr, $find);
 
-if ($posicao !== NULL) echo 'A chave ' . $find . ' está na posição ' . $posicao;
-    else echo 'A chave ' . $find . ' não está no array.';
+        if ($posicao !== NULL) echo 'A chave ' . $find . ' está na posição ' . $posicao;
+            else echo 'A chave ' . $find . ' não está no array.';
+    }
