@@ -2,7 +2,7 @@
 
 class Solution
 {
-    public function missingNumber($arr, $n) : int
+    public function missingNumber($arr, $n)
     {
         $resp = NULL;
 
