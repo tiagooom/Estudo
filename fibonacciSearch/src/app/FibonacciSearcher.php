@@ -10,16 +10,34 @@ class FibonacciSearcher
         $fibm1 = 1;
         $fibm = $fibm1 + $fibm2;
         $n = count($arr);
-        $fib = [$fibm2, $fibm1, $fibm];
 
-        for ($i = 2; $i < $n; $i++) 
+        for ($i = 3; $i < $n; $i++) 
         {
             $fibm2 = $fibm1;
             $fibm1 = $fibm;
             $fibm = $fibm1 + $fibm2;
-            $fib[] = $fibm;
+
         }
 
-        return $fib;
+        $offset = -1;
+
+        for ($j =0; $j < 5; $j++){
+
+            $posicao = min($offset + $fibm2, $n-1);
+
+            if ($arr[$posicao] == $find) {
+                return $posicao;
+            } elseif ($arr[$posicao] < $find) {
+                $fibm = $fibm1;
+                $fibm1 = $fibm2;
+                $fibm2 = $fibm - $fibm1;
+                $offset = $posicao;
+            } else {
+                $fibm = $fibm2;
+                $fibm1 = $fibm1 - $fibm;
+                $fibm2 = $fibm - $fibm1;
+            }
+        }
+        return $posicao;
     }    
 }

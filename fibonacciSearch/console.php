@@ -7,15 +7,12 @@ use Symfony\Component\Console\Application;
 use App\Command\GreetCommand;
 use App\FibonacciSearcher;
 
-    $array = [10, 20, 30, 40, 50, 60, 70];
-    $find = 10;
+    $array = [1, 3, 7, 15, 18, 21, 30, 35];
+    $find = 30;
 
     $fibonacci = new FibonacciSearcher();
 
     $teste = $fibonacci->fibSearch($array, $find);
-    echo '<pre>';
-    var_dump($teste);
-    echo '<pre>';
     
 $application = new Application();
 
@@ -24,4 +21,3 @@ $application->add(new GreetCommand());
 $application->add(new FibonacciSearchCommand());
 
 $application->run();
-var_dump('teste');
