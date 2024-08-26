@@ -20,7 +20,8 @@ class FibonacciSearchCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $array = [10, 20, 30, 40, 50, 60, 70];
+        $array = [2, 3, 7, 15, 18, 21, 30, 35];
+
         $find = $input->getArgument('find');
 
         $fibonacci = new FibonacciSearcher();
