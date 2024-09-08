@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use \Illuminate\Support\Arr;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,8 +45,28 @@ Route::get('/jobs', function () {
 });
 
 Route::get('/jobs/{id}', function ($id) {
-    dd($id);
-    return view('contact');
+
+    $jobs = [
+        [
+            'id' => 1,
+            'title' => 'Director',
+            'salary' => '$50,000'
+        ],
+        [
+            'id' => 2,
+            'title' => 'Teacher',
+            'salary' => '$40,000'
+        ],
+        [
+            'id' => 3,
+            'title' => 'Teste',
+            'salary' => '$10,000'
+        ]
+    ];
+    
+    $job = Arr::first($jobs, fn($job) => $job['id'] == $id);
+    
+    return view('job', ['job' => $job]);
 });
 
 Route::get('/contact', function () {
