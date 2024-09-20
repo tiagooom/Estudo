@@ -23,12 +23,13 @@ Route::get('/', function () {
 });
 
 Route::get('/jobs', function () {
-    $jobs = Job::with('employer')->latest()->cursorPaginate(3);
+    $jobs = Job::with('employer')->latest()->orderby('id')->cursorPaginate(3);
     return view('jobs.index', [
         'jobs' => $jobs 
     ]);
 });
 
+//Create
 Route::post('/jobs', function () {
     request()->validate([
         'title' => ['required' , 'min:3'],
@@ -48,11 +49,45 @@ Route::get('/jobs/create', function() {
     return view('jobs.create');
 });
 
+//show
 Route::get('/jobs/{id}', function ($id) {
     
     $job = job::find($id);
     
     return view('jobs.show', ['job' => $job]);
+});
+
+//edit
+Route::get('/jobs/{id}/edit', function($id) {
+
+    $job = job::find($id);
+
+    return view('jobs.edit', ['job' => $job]);
+});
+
+//update
+Route::patch('/jobs/{id}', function ($id) {
+    
+    request()->validate([
+        'title' => ['required' , 'min:3'],
+        'salary' => ['required']
+    ]);
+
+    $job = Job::findOrFail($id);
+
+    $job->title = request('title');
+    $job->salary = request('salary');
+    $job->save();
+
+    return redirect('/jobs/'.$id);
+});
+
+//remove
+Route::delete('/jobs/{id}', function ($id) {
+    
+    Job::findOrFail($id)->delete();
+    
+    return redirect('/jobs');
 });
 
 Route::get('/contact', function () {
