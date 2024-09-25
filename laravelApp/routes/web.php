@@ -19,6 +19,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/welcome', 'welcome');
 Route::view('/', 'home');
-Route::view('/usuarios', 'usuarios');
+
+//Route::view('/usuarios', 'usuarios');
+Route::get('/usuarios', function() {
+    $usuarios = App\Models\Usuario::cursorPaginate(6);
+
+    return (view('usuarios', ['usuarios' => $usuarios]));
+});
+
 Route::view('/tarefas', 'tarefas');
 
