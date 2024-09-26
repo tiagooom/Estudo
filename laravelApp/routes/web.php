@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::view('/welcome', 'welcome');
 Route::view('/', 'home');
 
-//Route::view('/usuarios', 'usuarios');
+Route::view('/usuarios/create', 'create');
 Route::get('/usuarios', function() {
     $usuarios = App\Models\Usuario::cursorPaginate(6);
 

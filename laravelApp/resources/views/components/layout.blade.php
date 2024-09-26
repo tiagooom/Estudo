@@ -29,7 +29,7 @@
                 <div class="hidden md:block">
                 <div class="ml-10 flex items-baseline space-x-4">
                     <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                    <a href="/" class="{{ request()->is('/') ? 'rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white' : 'rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white' }}">Página Inicial</a>
+                    <a href="/" class="{{ request()->is('/') ? 'rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white' : 'rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white' }}">Início</a>
                     <a href="/usuarios" class="{{ request()->is('usuarios') ? 'rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white' : 'rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white' }}">Usuários</a>
                     <a href="/tarefas" class="{{ request()->is('tarefas') ? 'rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white' : 'rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white' }}">Tarefas</a>
                 </div>
@@ -79,7 +79,7 @@
         <div class="md:hidden" id="mobile-menu">
             <div class="space-y-1 px-2 pb-3 pt-2 sm:px-3">
             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-            <a href="/" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">{{ $title }}</a>
+            <a href="/" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white">Início</a>
             <a href="/usuarios" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Usuários</a>
             <a href="/tarefas" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Tarefas</a>
             </div>
@@ -111,7 +111,7 @@
     
         <header class="bg-white shadow">
         <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-            <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{ $title }}</h1>
+            <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{ $heading }}</h1>
         </div>
         </header>
         <main>
