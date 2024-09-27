@@ -39,6 +39,22 @@ Route::post('/usuarios', function() {
     return (view('usuarios', ['usuarios' => $usuarios]));
 });
 
+Route::get('/usuarios/{id}', function($id) {
+    $usuario = App\Models\Usuario::findOrFail($id);
+
+    return (view('edit', ['usuario' => $usuario]));
+});
+
+Route::patch('/usuarios/{id}', function($id) {
+    $usuario = App\Models\Usuario::findOrFail($id);
+
+    $usuario->update([
+        'nome' => request()->nome,
+        'email' => request()->email
+    ]);
+
+    return (redirect('usuarios'));
+});
 
 Route::view('/tarefas', 'tarefas');
 
