@@ -21,11 +21,24 @@ Route::view('/welcome', 'welcome');
 Route::view('/', 'home');
 
 Route::view('/usuarios/create', 'create');
+
 Route::get('/usuarios', function() {
-    $usuarios = App\Models\Usuario::cursorPaginate(6);
+    $usuarios = App\Models\Usuario::latest()->orderby('id')->cursorPaginate(6);
 
     return (view('usuarios', ['usuarios' => $usuarios]));
 });
+
+Route::post('/usuarios', function() {
+    App\Models\Usuario::create([
+        'nome' => request()->nome,
+        'email' => request()->email
+    ]);
+
+    $usuarios = App\Models\Usuario::latest()->orderby('id')->cursorPaginate(6);
+
+    return (view('usuarios', ['usuarios' => $usuarios]));
+});
+
 
 Route::view('/tarefas', 'tarefas');
 
