@@ -56,5 +56,13 @@ Route::patch('/usuarios/{id}', function($id) {
     return (redirect('usuarios'));
 });
 
+Route::delete('/usuarios/{id}', function($id) {
+    $usuario = App\Models\Usuario::findOrFail($id);
+
+    $usuario->delete($id);
+
+    return (redirect('usuarios'));
+});
+
 Route::view('/tarefas', 'tarefas');
 
