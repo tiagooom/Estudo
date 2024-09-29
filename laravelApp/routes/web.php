@@ -20,49 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::view('/welcome', 'welcome');
 Route::view('/', 'home');
 
-Route::view('/usuarios/create', 'create');
-
-Route::get('/usuarios', function() {
-    $usuarios = App\Models\Usuario::latest()->orderby('id')->cursorPaginate(6);
-
-    return (view('usuarios', ['usuarios' => $usuarios]));
-});
-
-Route::post('/usuarios', function() {
-    App\Models\Usuario::create([
-        'nome' => request()->nome,
-        'email' => request()->email
-    ]);
-
-    $usuarios = App\Models\Usuario::latest()->orderby('id')->cursorPaginate(6);
-
-    return (view('usuarios', ['usuarios' => $usuarios]));
-});
-
-Route::get('/usuarios/{id}', function($id) {
-    $usuario = App\Models\Usuario::findOrFail($id);
-
-    return (view('edit', ['usuario' => $usuario]));
-});
-
-Route::patch('/usuarios/{id}', function($id) {
-    $usuario = App\Models\Usuario::findOrFail($id);
-
-    $usuario->update([
-        'nome' => request()->nome,
-        'email' => request()->email
-    ]);
-
-    return (redirect('usuarios'));
-});
-
-Route::delete('/usuarios/{id}', function($id) {
-    $usuario = App\Models\Usuario::findOrFail($id);
-
-    $usuario->delete($id);
-
-    return (redirect('usuarios'));
-});
+Route::resource('usuarios', App\Http\Controllers\UsuarioController::class);
 
 Route::view('/tarefas', 'tarefas');
 
