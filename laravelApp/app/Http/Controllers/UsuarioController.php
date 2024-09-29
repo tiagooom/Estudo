@@ -12,12 +12,12 @@ class UsuarioController extends Controller
     {
         $usuarios = Usuario::latest()->orderby('id', 'desc')->cursorPaginate(6);
 
-        return (view('usuarios', ['usuarios' => $usuarios]));
+        return (view('usuarios.index', ['usuarios' => $usuarios]));
     }
 
     public function create()
     {
-        return view('create');
+        return view('usuarios.create');
     }
 
     public function store(Request $request)
@@ -29,21 +29,21 @@ class UsuarioController extends Controller
     
         $usuarios = Usuario::latest()->orderby('id')->cursorPaginate(6);
     
-        return (view('usuarios', ['usuarios' => $usuarios]));
+        return (view('usuarios.index', ['usuarios' => $usuarios]));
     }
 
     public function show(string $id)
     {
         $usuario = Usuario::findOrFail($id);
 
-        return (view('edit', ['usuario' => $usuario]));
+        return (view('usuarios.edit', ['usuario' => $usuario]));
     }
 
     public function edit(string $id)
     {
         $usuario = Usuario::findOrFail($id);
 
-        return (view('edit', ['usuario' => $usuario]));
+        return (view('usuarios.edit', ['usuario' => $usuario]));
     }
 
     public function update(Request $request, string $id)
