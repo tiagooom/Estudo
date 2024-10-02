@@ -23,6 +23,7 @@ Route::view('/welcome', 'welcome');
 Route::view('/', 'home');
 
 Route::resource('usuarios', UsuarioController::class);
+
 Route::resource('tarefas', TarefaController::class);
 
 //Route::view('/tarefas', 'tarefas');

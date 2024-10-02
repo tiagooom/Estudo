@@ -5,16 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Usuario extends Model
+class Tarefa extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'nome',
-        'email'
+        'titulo',
+        'descricao',
+        'usuario_id'
     ];
 
-    public function tarefa() {
-        return $this->hasMany(Tarefa::class);
+    public function usuario() {
+        return $this->belongsTo(Usuario::class);
     }
 }
