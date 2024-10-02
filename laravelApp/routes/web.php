@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\TarefaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +22,8 @@ use Illuminate\Support\Facades\Route;
 Route::view('/welcome', 'welcome');
 Route::view('/', 'home');
 
-Route::resource('usuarios', App\Http\Controllers\UsuarioController::class);
+Route::resource('usuarios', UsuarioController::class);
+Route::resource('tarefas', TarefaController::class);
 
-Route::view('/tarefas', 'tarefas');
+//Route::view('/tarefas', 'tarefas');
 
