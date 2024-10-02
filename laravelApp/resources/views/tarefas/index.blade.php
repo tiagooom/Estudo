@@ -14,7 +14,7 @@
                     {{ $tarefa->usuario->nome }}
                 </div>
                 <div>
-                    <strong>Tarefa: </strong> {{ $tarefa->descricao }}
+                    <strong>Tarefa: </strong> {{ $tarefa->titulo }}
                 </div>
             </a>
         @endforeach

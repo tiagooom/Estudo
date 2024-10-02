@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tarefa;
+use App\Models\Usuario;
 use Illuminate\Http\Request;
 
 class TarefaController extends Controller
@@ -16,21 +17,26 @@ class TarefaController extends Controller
 
         return (view('tarefas.index', ['tarefas' => $tarefas]));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        return view('tarefas.create');
-    }
+        $usuarios = Usuario::all();
 
-    /**
-     * Store a newly created resource in storage.
-     */
+        return view('tarefas.create', compact('usuarios'));
+    }
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'titulo' => 'required', 
+            'usuario_id' => 'required|exists:usuarios,id',       
+        ]);
+
+        Tarefa::create([
+            'titulo' => request()->titulo,
+            'descricao' => request()->descricao,
+            'usuario_id' => request()->usuario_id
+        ]);
+    
+        return (redirect('tarefas'));
     }
 
     /**

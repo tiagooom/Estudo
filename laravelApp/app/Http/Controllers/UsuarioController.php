@@ -32,9 +32,7 @@ class UsuarioController extends Controller
             'email' => request()->email
         ]);
     
-        $usuarios = Usuario::latest()->orderby('id')->cursorPaginate(6);
-    
-        return (view('usuarios.index', ['usuarios' => $usuarios]));
+        return (redirect('usuarios'));
     }
 
     public function show(string $id)
