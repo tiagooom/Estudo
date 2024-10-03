@@ -30,6 +30,12 @@ class TarefaController extends Controller
             'usuario_id' => 'required|exists:usuarios,id',       
         ]);
 
+        $qtdTarefas = Tarefa::where('usuario_id', '=', $request->usuario_id)->count();
+
+        if ($qtdTarefas >= 5) {
+            return redirect()->back()->withErrors(['usuario_id' => 'O usuário já tem o limite de 5 tarefas.'])->withInput();
+        }
+
         Tarefa::create([
             'titulo' => request()->titulo,
             'descricao' => request()->descricao,
@@ -61,6 +67,12 @@ class TarefaController extends Controller
             'titulo' => 'required', 
             'usuario_id' => 'required|exists:usuarios,id',       
         ]);
+
+        $qtdTarefas = Tarefa::where('usuario_id', '=', $request->usuario_id)->count();
+
+        if (($qtdTarefas >= 5) && ($request->usuario_id != $tarefa->usuario_id)) {
+            return redirect()->back()->withErrors(['usuario_id' => 'O usuário já tem o limite de 5 tarefas.'])->withInput();
+        }
         
         $tarefa->update([
             'titulo' => request()->titulo,
