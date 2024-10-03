@@ -38,21 +38,18 @@ class TarefaController extends Controller
     
         return (redirect('tarefas'));
     }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(Tarefa $tarefa)
     {
-        //
+        $usuarios = Usuario::all();
+
+        return (view('tarefas.show', ['tarefa' => $tarefa, 'usuarios' => $usuarios]));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Tarefa $tarefa)
     {
-        //
+        $usuarios = Usuario::all();
+
+        return (view('tarefas.edit', ['tarefa' => $tarefa, 'usuarios' => $usuarios]));
     }
 
     /**
@@ -60,7 +57,18 @@ class TarefaController extends Controller
      */
     public function update(Request $request, Tarefa $tarefa)
     {
-        //
+        $request->validate([
+            'titulo' => 'required', 
+            'usuario_id' => 'required|exists:usuarios,id',       
+        ]);
+        
+        $tarefa->update([
+            'titulo' => request()->titulo,
+            'descricao' => request()->descricao,
+            'usuario_id' => request()->usuario_id
+        ]);
+
+        return (redirect('tarefas/' . $tarefa->id));
     }
 
     /**
