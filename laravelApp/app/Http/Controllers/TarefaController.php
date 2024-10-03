@@ -76,6 +76,8 @@ class TarefaController extends Controller
      */
     public function destroy(Tarefa $tarefa)
     {
-        //
+        $tarefa->delete();
+
+        return redirect('tarefas')->with('success', 'Tarefa deletada com sucesso!');
     }
 }
