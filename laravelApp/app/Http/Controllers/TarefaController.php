@@ -15,6 +15,10 @@ class TarefaController extends Controller
     {
         $tarefas = Tarefa::latest()->orderby('id', 'desc')->cursorPaginate(6);
 
+        if (request()->wantsJson() || request()->has('json')) {
+            return response()->json($tarefas); 
+        }
+
         return (view('tarefas.index', ['tarefas' => $tarefas]));
     }
     public function create()
@@ -80,7 +84,7 @@ class TarefaController extends Controller
             'usuario_id' => request()->usuario_id
         ]);
 
-        return (redirect('tarefas/' . $tarefa->id));
+        return (redirect('tarefas'));
     }
 
     /**
