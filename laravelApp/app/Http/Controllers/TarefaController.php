@@ -94,6 +94,12 @@ class TarefaController extends Controller
     {
         $tarefa->delete();
 
+        if (request()->wantsJson()) {
+            return response()->json([
+                'message' => 'Tarefa deletada com sucesso!'
+            ], 200);
+        }
+
         return redirect('tarefas')->with('success', 'Tarefa deletada com sucesso!');
     }
 }
