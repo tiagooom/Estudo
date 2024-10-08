@@ -21,6 +21,7 @@ use App\Http\Controllers\TarefaController;
 
 Route::view('/welcome', 'welcome');
 Route::view('/', 'home');
+Route::view('/login', 'auth.login');
 
 Route::resource('usuarios', UsuarioController::class);
 
