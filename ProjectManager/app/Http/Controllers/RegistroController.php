@@ -19,7 +19,7 @@ class RegistroController extends Controller
         $atributos = $request->validate([
             'nome' => ['required'],
             'email' => ['required'],
-            'password' => ['required'],
+            'password' => ['required', 'confirmed', 'min:6'],
         ]);
 
         $usuario = User::create($atributos);
