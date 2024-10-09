@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RegistroController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,8 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-});
+// Route::get('/', function () {
+//     return view('home');
+// });
+
+Route::view('/', 'home');
+Route::view('/login', 'auth.login');
+
+Route::get('registro', [RegistroController::class, 'show']);
+Route::post('registro', [RegistroController::class, 'create']);
+
 
 
