@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Projeto;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ProjetoController extends Controller
@@ -11,7 +13,9 @@ class ProjetoController extends Controller
      */
     public function index()
     {
-        return view('projeto.index');
+        $projetos = Projeto::latest()->orderby('id', 'desc')->cursorPaginate(5);
+
+        return (view('projetos.index', ['projetos' => $projetos]));
     }
 
     /**
@@ -19,7 +23,9 @@ class ProjetoController extends Controller
      */
     public function create()
     {
-        //
+        $usuarios = User::all();
+
+        return view('projetos.create', compact('usuarios'));
     }
 
     /**
@@ -27,7 +33,24 @@ class ProjetoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'titulo' => 'required', 
+            'descricao' => 'required', 
+            'data_inicio' => 'required', 
+            'status' => 'required', 
+        ]);
+
+        $projeto = Projeto::create([
+            'titulo' => request()->titulo,
+            'descricao' => request()->descricao,
+            'data_inicio' => request()->data_inicio,
+            'data_fim' => request()->data_fim,
+            'status' => request()->status
+        ]);
+
+        $projeto->usuarios()->attach(request()->usuario_id);
+    
+        return (redirect('projetos'));
     }
 
     /**
@@ -43,7 +66,7 @@ class ProjetoController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        
     }
 
     /**

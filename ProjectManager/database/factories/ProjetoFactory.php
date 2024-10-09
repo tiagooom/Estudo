@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Projeto;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,7 +23,19 @@ class ProjetoFactory extends Factory
             'descricao' => $this->faker->paragraph, 
             'data_inicio' => $this->faker->dateTimeBetween('now', '+1 week'), 
             'data_fim' => $this->faker->dateTimeBetween('now', '+1 month'), 
-            'status' => 'Em andamento', // Um status fictício
+            'status' => $this->faker->randomElement(['Pendente', 'Em andamento', 'Finalizado']),
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (Projeto $projeto) {
+            // Associar um usuário aleatório à tabela projeto_user
+            $usuarios = User::inRandomOrder()->take(3)->get(); // Pega 3 usuários aleatórios
+
+            foreach ($usuarios as $usuario) {
+                $projeto->usuarios()->attach($usuario->id); // Associa cada usuário ao projeto
+            }
+        });
     }
 }
