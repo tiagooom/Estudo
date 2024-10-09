@@ -56,9 +56,11 @@ class ProjetoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Projeto $projeto)
     {
-        //
+        $usuarios = User::all();
+
+        return (view('projetos.show', ['projeto' => $projeto, 'usuarios' => $usuarios]));
     }
 
     /**

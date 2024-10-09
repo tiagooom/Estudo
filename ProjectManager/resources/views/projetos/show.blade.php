@@ -1,15 +1,24 @@
-<x-layout title='Tarefa'>
+<x-layout title='Projeto'>
     <x-slot:heading>
-        Terefa
+        Projeto
     </x-slot:heading>
-    <h2 class="font-bold text-lg">{{ $tarefa->titulo }}</h2>
+    <h2 class="font-bold text-lg">{{ $projeto->titulo }}</h2>
     <p class="mb-4 mt-4">
-         <strong>Descrição:</strong> {{ $tarefa['descricao'] }}.
+         <strong>Descrição:</strong> {{ $projeto->descricao }}.
     </p>
     <p>
-        <strong>Criado por:</strong> {{ $tarefa->usuario->nome }}.
+        <strong>Inicio:</strong> {{ $projeto->data_inicio }} <strong>Fim:</strong> {{ $projeto->data_fim }}
+   </p>
+   <p class="mb-4 mt-4">
+        <strong>Status:</strong> {{ $projeto->status }}.
+   </p>
+   <p>
+        <strong>Usuarios:</strong> 
+        @foreach ($projeto->usuarios as $usuario)
+        {{ $projeto->usuarios->pluck('nome')->implode(', ') }}
+        @endforeach.
    </p>
     <p class="mt-6">
-        <x-button href="/tarefas/{{ $tarefa->id }}/edit">Editar</x-button>
+        <x-button href="/Projetos/{{ $projeto->id }}/edit">Editar</x-button>
     </p>
 </x-layout>

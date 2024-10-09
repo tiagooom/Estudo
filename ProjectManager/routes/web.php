@@ -20,15 +20,15 @@ use Illuminate\Support\Facades\Route;
 //     return view('home');
 // });
 
-Route::view('/', 'home');
+Route::view('/', 'home')->name('home');
 
-Route::get('login', [LoginController::class, 'show']);
+Route::get('login', [LoginController::class, 'show'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
 Route::get('logout', [LoginController::class, 'logout']);
 
 Route::get('registro', [RegistroController::class, 'show']);
 Route::post('registro', [RegistroController::class, 'create']);
 
-Route::resource('projetos', ProjetoController::class);
+Route::resource('projetos', ProjetoController::class)->middleware('auth');
 
 
