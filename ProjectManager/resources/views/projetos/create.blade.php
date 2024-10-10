@@ -1,6 +1,9 @@
 <x-layout title='Projeto'>
     <x-slot:heading>
-        Criando projeto
+        <div class="flex justify-between items-center">
+            <span>Criando Projeto</span>
+            <x-button href="/tarefa/create"> Criar tarefa</x-button>
+        </div>
     </x-slot:heading>
     <form method="POST" action="/projetos"> 
         @csrf
