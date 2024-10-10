@@ -13,10 +13,7 @@
         <strong>Status:</strong> {{ $projeto->status }}.
    </p>
    <p>
-        <strong>Usuarios:</strong> 
-        @foreach ($projeto->usuarios as $usuario)
-        {{ $projeto->usuarios->pluck('nome')->implode(', ') }}
-        @endforeach.
+        <strong>Usuarios:</strong>  {{ trim($projeto->usuarios->pluck('nome')->implode(', ')) }}.
    </p>
     <p class="mt-6">
         <x-button href="/Projetos/{{ $projeto->id }}/edit">Editar</x-button>
