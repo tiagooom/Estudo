@@ -68,22 +68,51 @@ class ProjetoController extends Controller
      */
     public function edit(string $id)
     {
-        
+        $projeto = Projeto::findOrFail($id);
+
+        $usuarios = User::all();
+
+        return view('projetos.edit', compact('projeto', 'usuarios'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Projeto $projeto)
     {
-        //
+        $request->validate([
+            'titulo' => 'required', 
+            'descricao' => 'required', 
+            'data_inicio' => 'required', 
+            'status' => 'required', 
+        ]);
+        
+        $projeto->update([
+            'titulo' => request()->titulo,
+            'descricao' => request()->descricao,
+            'data_inicio' => request()->data_inicio,
+            'data_fim' => request()->data_fim,
+            'status' => request()->status
+        ]);
+
+        if ($request->input('action') === 'add_user') {
+            $projeto->usuarios()->attach(request()->add_user);
+        }
+
+        if ($request->input('action') === 'del_user') {
+            $projeto->usuarios()->detach(request()->del_user);
+        }
+
+        return (redirect('projetos/'.$projeto->id));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Projeto $projeto)
     {
-        //
+        $projeto->delete();
+
+        return (redirect('projetos')->with('delSuccess', 'Projeto removido com sucesso!'));
     }
 }

@@ -7,7 +7,7 @@
          <strong>Descrição:</strong> {{ $projeto->descricao }}.
     </p>
     <p>
-        <strong>Inicio:</strong> {{ $projeto->data_inicio }} <strong>Fim:</strong> {{ $projeto->data_fim }}
+        <strong>Inicio:</strong> {{ \Carbon\Carbon::parse($projeto->data_inicio)->format('d/m/Y') }} <strong>Fim:</strong> {{ \Carbon\Carbon::parse($projeto->data_fim)->format('d/m/Y') }}
    </p>
    <p class="mb-4 mt-4">
         <strong>Status:</strong> {{ $projeto->status }}.
@@ -16,6 +16,6 @@
         <strong>Usuarios:</strong>  {{ trim($projeto->usuarios->pluck('nome')->implode(', ')) }}.
    </p>
     <p class="mt-6">
-        <x-button href="/Projetos/{{ $projeto->id }}/edit">Editar</x-button>
+        <x-button href="/projetos/{{ $projeto->id }}/edit">Editar</x-button>
     </p>
 </x-layout>
