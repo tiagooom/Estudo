@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Projeto;
 use App\Models\Tarefa;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class TarefaController extends Controller
@@ -22,7 +24,11 @@ class TarefaController extends Controller
      */
     public function create()
     {
-        //
+        $usuarios = User::all();
+
+        $projeto = Projeto::findOrFail(request()->projeto);
+
+        return view('tarefas.create', compact('usuarios', 'projeto'));
     }
 
     /**
@@ -30,7 +36,25 @@ class TarefaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'titulo' => 'required', 
+            'descricao' => 'required', 
+            'data_inicio' => 'required', 
+            'status' => 'required', 
+            'usuario_id' => 'required',
+        ]);
+
+        $tarefa = Tarefa::create([
+            'titulo' => request()->titulo,
+            'descricao' => request()->descricao,
+            'data_inicio' => request()->data_inicio,
+            'data_fim' => request()->data_fim,
+            'status' => request()->status, 
+            'usuario_id' => request()->usuario_id, 
+            'projeto_id' => request()->projeto_id,
+        ]);
+    
+        return (redirect('projetos/'.$tarefa->projeto_id));
     }
 
     /**

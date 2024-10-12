@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Projeto;
+use App\Models\Tarefa;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -60,7 +61,9 @@ class ProjetoController extends Controller
     {
         $usuarios = User::all();
 
-        return (view('projetos.show', ['projeto' => $projeto, 'usuarios' => $usuarios]));
+        $tarefa = Tarefa::first();
+
+        return (view('projetos.show', ['projeto' => $projeto, 'usuarios' => $usuarios, 'tarefa' => $tarefa]));
     }
 
     /**
