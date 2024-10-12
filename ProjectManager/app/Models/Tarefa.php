@@ -13,11 +13,12 @@ class Tarefa extends Model
 
     public function projeto()
     {
-        $this->belongsTo(Projeto::class);
+        return $this->belongsTo(Projeto::class);
     }
+    
 
     public function usuario()
     {
-        $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 }
