@@ -59,11 +59,9 @@ class ProjetoController extends Controller
      */
     public function show(Projeto $projeto)
     {
-        $usuarios = User::all();
-
         $tarefas = Tarefa::where('projeto_id', $projeto->id)->get();
 
-        return (view('projetos.show', ['projeto' => $projeto, 'usuarios' => $usuarios, 'tarefas' => $tarefas]));
+        return (view('projetos.show', ['projeto' => $projeto, 'tarefas' => $tarefas]));
     }
 
     /**
