@@ -61,9 +61,9 @@ class ProjetoController extends Controller
     {
         $usuarios = User::all();
 
-        $tarefa = Tarefa::first();
+        $tarefas = Tarefa::where('projeto_id', $projeto->id)->get();
 
-        return (view('projetos.show', ['projeto' => $projeto, 'usuarios' => $usuarios, 'tarefa' => $tarefa]));
+        return (view('projetos.show', ['projeto' => $projeto, 'usuarios' => $usuarios, 'tarefas' => $tarefas]));
     }
 
     /**
