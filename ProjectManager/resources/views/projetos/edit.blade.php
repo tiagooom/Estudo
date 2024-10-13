@@ -46,9 +46,9 @@
                         <label for="status" class="block text-sm font-medium leading-6 text-gray-900">Status</label>
                         <div class="mt-2">
                           <select id="status" name="status" autocomplete="status-name" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
-                                <option value="Pendente" >Pendente</option>
-                                <option value="Em andamento" >Em andamento</option>
-                                <option value="Finalizado" >Finalizado</option>
+                                <option value="Pendente" {{ $projeto->status == 'Pendente' ? 'selected' : '' }}>Pendente</option>
+                                <option value="Em andamento" {{ $projeto->status == 'Em andamento' ? 'selected' : '' }}>Em andamento</option>
+                                <option value="Finalizado" {{ $projeto->status == 'Finalizado' ? 'selected' : '' }}>Finalizado</option>
                           </select>
                           @error('status')
                                 <span class="text-red-600 text-sm">{{ $message }}</span>
