@@ -13,7 +13,7 @@
         <strong>Status:</strong> {{ $tarefa->status }}.
    </p>
    <p>
-        <strong>Usuarios:</strong>  {{ trim($tarefa->usuarios->pluck('nome')->implode(', ')) }}.
+        <strong>Usuario:</strong> {{ $tarefa->usuario->nome }}.
    </p>
     <p class="mt-6">
         <x-button href="/tarefas/{{ $tarefa->id }}/edit">Editar</x-button>

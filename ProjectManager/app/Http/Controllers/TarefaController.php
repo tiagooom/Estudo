@@ -66,25 +66,51 @@ class TarefaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Tarefa $tarefa)
     {
-        //
+        return (view('tarefas.show', ['tarefa' => $tarefa]));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Tarefa $tarefa)
     {
-        //
+        $usuarios = User::all();
+
+        return view('tarefas.edit', compact('tarefa', 'usuarios'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Tarefa $tarefa)
     {
-        //
+        $request->validate([
+            'titulo' => 'required', 
+            'descricao' => 'required', 
+            'data_inicio' => 'required', 
+            'status' => 'required', 
+            'usuario_id' => 'required',
+        ]);
+
+        $qtdTarefas = Tarefa::where('usuario_id', '=', $request->usuario_id)->count();
+
+        if (($qtdTarefas >= 5) && ($request->usuario_id != $tarefa->usuario_id)) {
+            return redirect()->back()->withErrors(['usuario_id' => 'O usuário já tem o limite de 5 tarefas.'])->withInput();
+        }
+        
+        $tarefa->update([
+            'titulo' => request()->titulo,
+            'descricao' => request()->descricao,
+            'data_inicio' => request()->data_inicio,
+            'data_fim' => request()->data_fim,
+            'status' => request()->status, 
+            'usuario_id' => request()->usuario_id, 
+            'projeto_id' => request()->projeto_id,
+        ]);
+
+        return (redirect('tarefas/'.$tarefa->id));
     }
 
     /**
