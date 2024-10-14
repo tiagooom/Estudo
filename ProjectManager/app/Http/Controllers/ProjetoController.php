@@ -59,7 +59,7 @@ class ProjetoController extends Controller
      */
     public function show(Projeto $projeto)
     {
-        $tarefas = Tarefa::where('projeto_id', $projeto->id)->get();
+        $tarefas = Tarefa::where('projeto_id', $projeto->id)->orderBy('created_at', 'desc')->get();
 
         return (view('projetos.show', ['projeto' => $projeto, 'tarefas' => $tarefas]));
     }

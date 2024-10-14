@@ -74,9 +74,18 @@
             </div>
         </div>
   
-        <div class="mt-6 flex items-center justify-end gap-x-6">
-            <a href='/tarefas' type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancelar</a>
-            <button type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Salvar</button>
+        <div class="mt-6 flex items-center justify-between gap-x-6">
+            <div>
+                <button type="submit" form="deletetarefa" class="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Remover tarefa</button>
+            </div>
+            <div>
+                <a href='/tarefas' type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancelar</a>
+                <button type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Salvar</button>
+            </div>
         </div>
+    </form>
+    <form method="POST" id="deletetarefa" name="deletetarefa" action="/tarefas/{{ $tarefa->id }}"> 
+        @csrf
+        @method('DELETE')
     </form>
 </x-layout>
