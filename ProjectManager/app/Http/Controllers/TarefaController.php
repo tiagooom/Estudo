@@ -14,9 +14,10 @@ class TarefaController extends Controller
      */
     public function index()
     {
+        $usuarios = User::all();
         $tarefas = Tarefa::latest()->orderby('id', 'desc')->cursorPaginate(5);
 
-        return (view('tarefas.index', ['tarefas' => $tarefas]));
+        return (view('tarefas.index', ['tarefas' => $tarefas, 'usuarios' => $usuarios]));
     }
 
     /**
