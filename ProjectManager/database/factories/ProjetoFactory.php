@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Projeto;
+use App\Models\Tarefa;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -35,6 +36,10 @@ class ProjetoFactory extends Factory
 
             foreach ($usuarios as $usuario) {
                 $projeto->usuarios()->attach($usuario->id); // Associa cada usuário ao projeto
+                Tarefa::factory()->create([
+                    'projeto_id' => $projeto->id,
+                    'usuario_id' => $usuarios->random()->id // Associa a tarefa a um usuário aleatório entre os 3 do projeto
+                ]);
             }
         });
     }

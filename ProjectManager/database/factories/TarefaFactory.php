@@ -21,9 +21,9 @@ class TarefaFactory extends Factory
         return [
             'titulo' => $this->faker->sentence,
             'descricao' => $this->faker->paragraph,
-            'data_inicio' => $this->faker->date(),
-            'data_fim' => $this->faker->date(),
-            'status' => 'Pendente',
+            'data_inicio' => $this->faker->dateTimeBetween('now', '+4 day'),
+            'data_fim' => $this->faker->dateTimeBetween('+1 week', '+4 week'),
+            'status' => $this->faker->randomElement(['Pendente', 'Em andamento', 'Finalizado']),
             'projeto_id' => Projeto::inRandomOrder()->first()->id,
             'usuario_id' => User::inRandomOrder()->first()->id,
         ];
