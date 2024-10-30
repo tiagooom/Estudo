@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Produto;
 use Illuminate\Http\Request;
 
 class ProdutoController extends Controller
@@ -11,38 +12,40 @@ class ProdutoController extends Controller
      */
     public function index()
     {
-        //
+        return Produto::all();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nome' => 'required|string|max:255',
+            'quantidade' => 'required|integer|min:0',
+        ]);
+
+        return Produto::create($request->all());
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Produto $produto)
     {
-        //
+        return $produto;
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Produto $produto)
     {
-        //
+        $request->validate([
+            'nome' => 'required|string|max:255',
+            'quantidade' => 'required|integer|min:0',
+        ]);
+
+        $produto->update($request->all());
+
+        return $produto;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Produto $produto)
     {
-        //
+        $produto->delete();
+
+        return response()->noContent();
     }
 }
