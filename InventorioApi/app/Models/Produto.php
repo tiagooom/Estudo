@@ -11,6 +11,6 @@ class Produto extends Model
 
     protected $fillable = [
         'nome',
-        'quatidade'
+        'quantidade'
     ];
 }

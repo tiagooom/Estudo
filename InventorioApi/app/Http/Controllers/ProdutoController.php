@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Produto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ProdutoController extends Controller
 {
@@ -12,7 +13,7 @@ class ProdutoController extends Controller
      */
     public function index()
     {
-        return Produto::all();
+        return Produto::orderBy('id', 'desc')->cursorPaginate(10);
     }
 
     public function store(Request $request)
