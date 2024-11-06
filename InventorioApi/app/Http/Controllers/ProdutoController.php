@@ -13,7 +13,7 @@ class ProdutoController extends Controller
      */
     public function index()
     {
-        return Produto::orderBy('id', 'desc')->cursorPaginate(10);
+        return Produto::orderBy('id', 'desc')->cursorPaginate(5);
     }
 
     public function store(Request $request)
