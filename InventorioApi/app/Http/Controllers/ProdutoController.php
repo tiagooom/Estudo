@@ -8,9 +8,6 @@ use Illuminate\Support\Facades\Log;
 
 class ProdutoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         return Produto::orderBy('id', 'desc')->cursorPaginate(5);
@@ -48,5 +45,19 @@ class ProdutoController extends Controller
         $produto->delete();
 
         return response()->noContent();
+    }
+
+    public function relatorioInventario(Produto $produto, $tipo = null)
+    {
+        switch ($tipo) {
+            case 'esgotados':
+                $produtos = $produto::where('quantidade', 0)->get();
+                break;
+                
+            case 'baixo-estoque':
+                $produtos = $produto::where('quantidade', '<', 5)->get();
+                break;
+        }
+        return response()->json($produtos);
     }
 }

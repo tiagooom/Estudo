@@ -21,3 +21,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::apiResource('produtos', ProdutoController::class);
 
+Route::get('/produtos/relatorio/{tipo?}', [ProdutoController::class, 'relatorioInventario']);
+
