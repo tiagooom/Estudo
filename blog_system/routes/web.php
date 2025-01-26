@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ArticleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,3 +24,5 @@ Route::post('/login', [AuthController::class, 'login']); // Processa o login
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout'); // Faz logout
 Route::get('/register', [AuthController::class, 'showregisterForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
+
+Route::resource('articles', ArticleController::class);
