@@ -11,6 +11,15 @@
     <div class="d-flex justify-content-center align-items-center vh-100">
         <div class="card shadow-lg p-4" style="width: 100%; max-width: 400px;">
             <h3 class="text-center mb-4">Login</h3>
+
+            <!-- Exibir mensagem de sucesso -->
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
             <form method="POST" action="">
                 @csrf
                 <!-- Email -->

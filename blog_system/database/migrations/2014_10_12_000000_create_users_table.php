@@ -12,14 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
+            $table->id(); // ID do usuário
+            $table->string('name'); // Nome do usuário
+            $table->string('email')->unique(); // E-mail único
+            $table->timestamp('email_verified_at')->nullable(); // E-mail verificado
+            $table->string('password'); // Senha (hashing automático pelo Laravel)
+            $table->enum('role', ['user', 'admin'])->default('user'); // Função do usuário (comum ou admin)
+            $table->rememberToken(); // Token para lembrar do login
+            $table->timestamps(); // Criado em e atualizado em
         });
+        
     }
 
     /**
