@@ -15,6 +15,11 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
+    public function showRegisterForm()
+    {
+        return view('auth.register');
+    }
+
     /**
      * Processa a tentativa de login.
      */
@@ -37,6 +42,31 @@ class AuthController extends Controller
         return back()->withErrors([
             'email' => 'As credenciais fornecidas estão incorretas.',
         ]);
+    }
+
+    public function register(Request $request)
+    {
+        // Validação dos dados do formulário
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        // Caso a validação falhe, retornar erros
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Criar o usuário
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password), // Criptografar a senha
+        ]);
+
+        // Redirecionar ou fazer alguma ação após o cadastro
+        return redirect('/login')->with('success', 'Cadastro realizado com sucesso!');
     }
 
     /**

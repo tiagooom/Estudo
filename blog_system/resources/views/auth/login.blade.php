@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,7 +40,7 @@
                 </div>
             </form>
             <div class="mt-3 text-center">
-                <a href="">Não tem conta? Cadastre-se</a>
+                <a href="{{ route('register') }}">Não tem conta? Cadastre-se</a>
             </div>
         </div>
     </div>
