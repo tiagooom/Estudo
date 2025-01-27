@@ -19,6 +19,7 @@ use App\Http\Controllers\ArticleController;
 //    return view('login');
 //});
 
+Route::view('/', 'home');
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login'); // Exibe a view de login
 Route::post('/login', [AuthController::class, 'login']); // Processa o login
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout'); // Faz logout
