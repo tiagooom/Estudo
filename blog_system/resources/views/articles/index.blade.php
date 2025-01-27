@@ -4,7 +4,8 @@
 
 @section('content')
     <h1>Artigos</h1>
-    <a href="{{ route('articles.create') }}" class="btn btn-primary">Criar Artigo</a>
+
+    <a href="{{ route('articles.create') }}" class="btn btn-primary rounded-pill px-3 my-3">Criar Artigo</a>
     
     <table class="table">
         <thead>
@@ -20,11 +21,11 @@
                     <td>{{ $article->title }}</td>
                     <td>{{ $article->category->name }}</td>
                     <td>
-                        <a href="{{ route('articles.edit', $article->id) }}" class="btn btn-warning">Editar</a>
+                        <a href="{{ route('articles.edit', $article->id) }}" class="btn btn-secondary rounded-pill px-3">Editar</a>
                         <form action="{{ route('articles.destroy', $article->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Deletar</button>
+                            <button type="submit" class="btn btn-danger rounded-pill px-3">Deletar</button>
                         </form>
                     </td>
                 </tr>

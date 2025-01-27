@@ -10,7 +10,7 @@
     <header class="p-3 text-bg-dark">
         <div class="container">
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0  me-3 text-white text-decoration-none">
                     <img src="https://getbootstrap.com/docs/5.0/assets/brand/bootstrap-logo-white.svg" alt="Logo" width="40" height="32">
                 </a>
 
