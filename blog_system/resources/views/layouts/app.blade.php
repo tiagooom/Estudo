@@ -24,11 +24,11 @@
                     @auth
                         <form action="{{ route('logout') }}" method="POST" class="d-inline">
                             @csrf
-                            <button type="submit" class="btn btn-outline-light me-2">Logout</button>
+                            <button type="submit" class="btn btn-outline-light rounded-pill me-2">Logout</button>
                         </form>
                     @else
-                        <a href="{{ route('login') }}" class="btn btn-outline-light me-2">Login</a>
-                        <a href="{{ route('register') }}" class="btn btn-warning">Registrar</a>
+                        <a href="{{ route('login') }}" class="btn btn-outline-light rounded-pill me-2">Login</a>
+                        <a href="{{ route('register') }}" class="btn btn-outline-light rounded-pill me-2">Registrar</a>
                     @endauth
                 </div>
             </div>
