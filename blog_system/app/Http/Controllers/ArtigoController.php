@@ -24,12 +24,9 @@ class ArtigoController extends Controller
     {
         $validatedData = $request->validate([
             'titulo' => 'required|string|max:255',
-            'corpo' => 'required|string|min:100',
+            'corpo' => 'required|string',
             'categoria_id' => 'required|exists:categorias,id',
-            'publicado' => 'nullable|boolean',
         ]);
-
-        $validatedData['publicado'] = $request->has('publicado') ? true : false;
 
         Artigo::create($validatedData);
 
