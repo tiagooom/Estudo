@@ -38,7 +38,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
 
-            return redirect()->intended('/articles'); // Redireciona após login bem-sucedido
+            return redirect()->intended('/artigos'); // Redireciona após login bem-sucedido
         }
 
         // Retorna erro caso as credenciais sejam inválidas

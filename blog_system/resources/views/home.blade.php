@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Home')
+@section('title', 'Inicio')
 
 @section('content')
     <div class="text-center py-5">
