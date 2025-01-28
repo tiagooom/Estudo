@@ -4,14 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Categoria; // Mudança: Categoria ao invés de Category
 
 class Artigo extends Model
 {
     use HasFactory;
 
     // Campos em português
-    protected $fillable = ['titulo', 'corpo', 'publicado_em', 'categoria_id'];
+    protected $fillable = ['titulo', 'corpo', 'categoria_id'];
 
     // Relação com a Categoria
     public function categoria()

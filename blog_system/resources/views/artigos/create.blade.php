@@ -47,18 +47,7 @@
             placeholder="Digite o conteúdo do artigo" 
             required>{{ old('corpo', $artigo->corpo ?? '') }}</textarea>
         </div>
-
-        <!-- Campo para publicar ou não -->
-        <div class="mb-3 form-check">
-            <input 
-            type="checkbox" 
-            class="form-check-input" 
-            id="publicado" 
-            name="publicado" 
-            {{ old('publicado', $artigo->publicado ?? false) ? 'checked' : '' }}>
-            <label class="form-check-label" for="publicado">Publicar artigo</label>
-        </div>
-
+        
         <!-- Botões -->
         <div class="d-flex justify-content-between">
             <button type="submit" class="btn btn-primary">Salvar</button>

@@ -15,8 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('titulo'); // Título do artigo
             $table->text('corpo'); // Corpo do artigo
-            $table->foreignId('categoria_id')->constrained('categorias')->onDelete('cascade');
-            $table->boolean('publicado')->default(false); // Artigo publicado ou não
+            $table->foreignId('categoria_id')->constrained('categorias')->onDelete('cascade'); // Artigo publicado ou não
             $table->timestamps();
         });
     }
