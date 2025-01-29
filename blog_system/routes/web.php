@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ArtigoController;
+use App\Http\Controllers\CategoriaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,4 +27,5 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout'); // Fa
 Route::get('/register', [AuthController::class, 'showregisterForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 
+Route::resource('categorias', CategoriaController::class);
 Route::resource('artigos', ArtigoController::class);

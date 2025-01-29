@@ -17,7 +17,7 @@
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="/" class="nav-link px-2 {{ request()->is('/') ? 'text-secondary' : 'text-white' }}">Início</a></li>
                     <li><a href="{{ route('artigos.index') }}" class="nav-link px-2 {{ request()->is('artigos*') ? 'text-secondary' : 'text-white' }}">Artigos</a></li>
-                    <li><a href="" class="nav-link px-2 {{ request()->is('categorias*') ? 'text-secondary' : 'text-white' }}">Categorias</a></li>
+                    <li><a href="{{ route('categorias.index') }}" class="nav-link px-2 {{ request()->is('categorias*') ? 'text-secondary' : 'text-white' }}">Categorias</a></li>
                 </ul>
 
                 <div class="text-end">
