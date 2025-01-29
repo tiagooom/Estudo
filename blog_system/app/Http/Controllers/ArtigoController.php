@@ -8,10 +8,19 @@ use Illuminate\Http\Request;
 
 class ArtigoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $artigos = Artigo::all(); // Pega todos os artigos
-        return view('artigos.index', compact('artigos'));
+        $categoria_id = $request->input('categoria');
+
+        if ($categoria_id) {
+            $artigos = Artigo::where('categoria_id', $categoria_id)->get();
+        } else {
+            $artigos = Artigo::all();
+        }
+
+        $categorias = Categoria::all();
+
+        return view('artigos.index', compact('artigos', 'categorias'));
     }
 
     public function create()
