@@ -38,7 +38,7 @@
         <tbody>
             @foreach ($artigos as $artigo)
                 <tr>
-                    <td>{{ $artigo->titulo }}</td>
+                    <td><a href="{{ route('artigos.show', $artigo->id) }}" class="text-decoration-none text-reset">{{ $artigo->titulo }}</a></td>
                     <td>{{ $artigo->categoria->nome }}</td>
                     <td>
                         <a href="{{ route('artigos.edit', $artigo->id) }}" class="btn btn-secondary rounded-pill px-3">Editar</a>
