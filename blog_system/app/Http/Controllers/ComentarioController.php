@@ -1,19 +1,19 @@
 <?php
 
-// app/Http/Controllers/ComentarioController.php
-
 namespace App\Http\Controllers;
 
 use App\Models\Comentario;
 use App\Models\Artigo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth; // Para acessar o usuário logado
+use Illuminate\Validation\ValidationException;
 
 class ComentarioController extends Controller
 {
     // Mostrar todos os comentários de um artigo específico
     public function index($artigoId)
     {
-        $comentarios = Comentario::where('artigo_id', $artigoId)->get();
+        $comentarios = Comentario::with('user')->where('artigo_id', $artigoId)->get();
         return response()->json($comentarios);
     }
 
@@ -26,10 +26,20 @@ class ComentarioController extends Controller
             'artigo_id' => 'required|exists:artigos,id',
         ]);
 
-        // Criar o novo comentário
+        if (!Auth::check()) {
+            throw ValidationException::withMessages([
+                'user' => ['Usuário não autenticado.'],
+            ]);
+        }
+
+        // Obter o usuário logado
+        $user = Auth::user();
+
+        // Criar o novo comentário com o usuário logado
         $comentario = Comentario::create([
             'conteudo' => $request->conteudo,
             'artigo_id' => $request->artigo_id,
+            'user_id' => $user->id, // Associando o comentário ao usuário logado
         ]);
 
         // Retornar uma resposta com o comentário criado
@@ -52,4 +62,3 @@ class ComentarioController extends Controller
         return response()->json(['success' => false, 'message' => 'Comentário não encontrado']);
     }
 }
-

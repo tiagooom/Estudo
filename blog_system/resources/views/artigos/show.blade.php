@@ -48,7 +48,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     comentariosHtml += `
                         <div class="bg-gray-100 p-3 my-2 rounded">
                             <p>${comentario.conteudo}</p>
-                            <small class="text-gray-500">${new Date(comentario.created_at).getDate().toString().padStart(2, '0')}/${(new Date(comentario.created_at).getMonth() + 1).toString().padStart(2, '0')}/${new Date(comentario.created_at).getFullYear()} ${new Date(comentario.created_at).getHours().toString().padStart(2, '0')}:${new Date(comentario.created_at).getMinutes().toString().padStart(2, '0')}</small>
+                            <small class="text-gray-500">
+                                ${new Date(comentario.created_at).getDate().toString().padStart(2, '0')}/${(new Date(comentario.created_at).getMonth() + 1).toString().padStart(2, '0')}/${new Date(comentario.created_at).getFullYear()} 
+                                ${new Date(comentario.created_at).getHours().toString().padStart(2, '0')}:${new Date(comentario.created_at).getMinutes().toString().padStart(2, '0')}
+                                Por: ${comentario.user.name}
+                            </small>
                             <button onclick="removerComentario(${comentario.id})" class="btn btn-danger rounded-pill px-3 ms-2">Excluir</button>
                         </div>
                     `;
@@ -56,6 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById('lista-comentarios').innerHTML = comentariosHtml;
             });
     }
+
 
     // Enviar novo comentário via AJAX
     document.getElementById("form-comentario").addEventListener("submit", function (e) {

@@ -12,6 +12,7 @@ class CreateComentariosTable extends Migration
             $table->id(); // Chave primária
             $table->text('conteudo'); // Conteúdo do comentário
             $table->foreignId('artigo_id')->constrained()->onDelete('cascade'); // Chave estrangeira para Artigo
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Chave estrangeira para Usuário
             $table->timestamps(); // Timestamps
         });
     }
