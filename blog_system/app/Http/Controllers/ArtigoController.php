@@ -23,6 +23,13 @@ class ArtigoController extends Controller
         return view('artigos.index', compact('artigos', 'categorias'));
     }
 
+    public function show($id)
+    {
+        $artigo = Artigo::findOrFail($id);
+        $categorias = Categoria::all();
+        return view('artigos.show', compact('artigo', 'categorias'));
+    }
+
     public function create()
     {
         $categorias = Categoria::all(); // Pega todas as categorias

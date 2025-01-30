@@ -29,3 +29,8 @@ Route::post('/register', [AuthController::class, 'register'])->name('register');
 
 Route::resource('categorias', CategoriaController::class);
 Route::resource('artigos', ArtigoController::class);
+
+// routes/web.php
+Route::middleware('api')->group(function () {
+    require base_path('routes/api.php');
+});
