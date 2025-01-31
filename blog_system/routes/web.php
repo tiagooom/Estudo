@@ -27,8 +27,11 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout'); // Fa
 Route::get('/register', [AuthController::class, 'showregisterForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 
-Route::resource('categorias', CategoriaController::class);
-Route::resource('artigos', ArtigoController::class);
+Route::middleware('auth')->group(function () {
+    Route::resource('categorias', CategoriaController::class);
+    Route::resource('artigos', ArtigoController::class);
+});
+
 
 // routes/web.php
 Route::middleware('api')->group(function () {
