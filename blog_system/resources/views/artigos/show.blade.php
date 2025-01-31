@@ -6,6 +6,15 @@
         <h1 class="text-2xl font-bold">{{ $artigo->titulo }}</h1>
         <p class="text-gray-600">{{ $artigo->corpo }}</p>
         <p class="text-gray-500 text-sm">Publicado em: {{ $artigo->created_at->format('d/m/Y H:i') }}</p>
+        
+        <div class="mt-4 flex gap-2">
+            <a href="{{ route('artigos.edit', $artigo->id) }}" class="btn btn-secondary rounded-pill px-3">Editar</a>
+            <form action="{{ route('artigos.destroy', $artigo->id) }}" method="POST" style="display:inline;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger rounded-pill px-3">Deletar</button>
+            </form>
+        </div>
 
         <hr class="my-4">
 
@@ -16,19 +25,22 @@
         <form id="form-comentario" class="mt-4">
             @csrf
             <input type="hidden" name="artigo_id" value="{{ $artigo->id }}">
-        
             <textarea id="comentario" name="conteudo" class="form-control w-75" placeholder="Escreva um comentário..."></textarea>
-            
             <div class="d-flex mt-2 mb-4">
                 <button type="submit" class="btn btn-primary">Enviar</button>
             </div>
         </form>
-        
-        
+
+        @push('styles')
+            <!-- Carregar Bootstrap Icons -->
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+        @endpush
 
         <!-- Lista de Comentários -->
         <div id="lista-comentarios" class="mt-6">
             <!-- Comentários serão carregados via AJAX -->
+            <i class="bi bi-trash"></i>
+
         </div>
     </div>
 </div>
@@ -38,7 +50,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     let artigoId = {{ $artigo->id }};
 
-    // Função para carregar comentários via AJAX
     function carregarComentarios() {
         fetch(`/artigos/${artigoId}/comentarios`)
             .then(response => response.json())
@@ -49,11 +60,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         <div class="bg-gray-100 p-3 my-2 rounded">
                             <p>${comentario.conteudo}</p>
                             <small class="text-gray-500">
-                                ${new Date(comentario.created_at).getDate().toString().padStart(2, '0')}/${(new Date(comentario.created_at).getMonth() + 1).toString().padStart(2, '0')}/${new Date(comentario.created_at).getFullYear()} 
-                                ${new Date(comentario.created_at).getHours().toString().padStart(2, '0')}:${new Date(comentario.created_at).getMinutes().toString().padStart(2, '0')}
+                                ${new Date(comentario.created_at).toLocaleDateString()} 
+                                ${new Date(comentario.created_at).toLocaleTimeString()} 
                                 Por: ${comentario.user.name}
                             </small>
-                            <button onclick="removerComentario(${comentario.id})" class="btn btn-danger rounded-pill px-3 ms-2">Excluir</button>
+                            <button onclick="removerComentario(${comentario.id})" class="p-0 border-0"><i class="bi bi-trash"></i></button>
+
                         </div>
                     `;
                 });
@@ -61,46 +73,35 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
-
-    // Enviar novo comentário via AJAX
     document.getElementById("form-comentario").addEventListener("submit", function (e) {
         e.preventDefault();
-
         let formData = new FormData(this);
-
         fetch(`/comentarios`, {
             method: "POST",
             body: formData,
-            headers: {
-                "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
-            }
+            headers: { "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value }
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data); // Imprime o conteúdo de "data" no console para análise
-
             if (data.success) {
                 document.getElementById("comentario").value = "";
-                carregarComentarios(); // Recarregar a lista de comentários
+                carregarComentarios();
             } else {
                 alert(data.error || "Erro ao adicionar comentário!");
             }
         });
     });
 
-    // Função para excluir comentário via AJAX
     window.removerComentario = function (id) {
         if (confirm("Deseja realmente excluir este comentário?")) {
             fetch(`/comentarios/${id}`, {
                 method: "DELETE",
-                headers: {
-                    "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
-                }
+                headers: { "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value }
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    carregarComentarios(); // Atualizar a lista de comentários
+                    carregarComentarios();
                 } else {
                     alert("Erro ao excluir comentário!");
                 }
@@ -108,7 +109,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     };
 
-    // Carregar comentários ao abrir a página
     carregarComentarios();
 });
 </script>
