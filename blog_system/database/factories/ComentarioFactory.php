@@ -14,9 +14,9 @@ class ComentarioFactory extends Factory
     public function definition()
     {
         return [
-            'artigo_id' => Artigo::factory(), // Criando um artigo para o comentário (se você tiver artigos)
+            'artigo_id' => Artigo::inRandomOrder()->first()->id, // Seleciona um artigo aleatório existente
             'conteudo' => $this->faker->paragraph, // Gerando um parágrafo de conteúdo
-            'user_id' => User::factory()
+            'user_id' => User::factory(),
         ];
     }
 }
