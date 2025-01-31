@@ -27,29 +27,18 @@
 
     <a href="{{ route('artigos.create') }}" class="btn btn-primary rounded-pill px-3 my-3">Criar Artigo</a>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Título</th>
-                <th>Categoria</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($artigos as $artigo)
-                <tr>
-                    <td><a href="{{ route('artigos.show', $artigo->id) }}" class="text-decoration-none text-reset">{{ $artigo->titulo }}</a></td>
-                    <td>{{ $artigo->categoria->nome }}</td>
-                    <td>
-                        <a href="{{ route('artigos.edit', $artigo->id) }}" class="btn btn-secondary rounded-pill px-3">Editar</a>
-                        <form action="{{ route('artigos.destroy', $artigo->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger rounded-pill px-3">Deletar</button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+    @if ($artigos->isEmpty())
+        <p>Nenhum artigo encontrado.</p>
+    @else
+        @foreach ($artigos as $artigo)
+            <a href="{{ route('artigos.show', $artigo->id) }}" class="text-decoration-none text-dark">
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $artigo->titulo }}</h5>
+                        <p class="card-text">{{ Str::limit($artigo->corpo, 100) }}</p>
+                    </div>
+                </div>
+                @endforeach
+            </a>
+    @endif
 @endsection
