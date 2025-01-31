@@ -77,11 +77,13 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then(response => response.json())
         .then(data => {
+            console.log(data); // Imprime o conteúdo de "data" no console para análise
+
             if (data.success) {
                 document.getElementById("comentario").value = "";
                 carregarComentarios(); // Recarregar a lista de comentários
             } else {
-                alert("Erro ao adicionar comentário!");
+                alert(data.error || "Erro ao adicionar comentário!");
             }
         });
     });

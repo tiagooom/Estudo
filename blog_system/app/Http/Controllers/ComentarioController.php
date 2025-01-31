@@ -27,9 +27,7 @@ class ComentarioController extends Controller
         ]);
 
         if (!Auth::check()) {
-            throw ValidationException::withMessages([
-                'user' => ['Usuário não autenticado.'],
-            ]);
+            return response()->json(['error' => 'Usuário não autenticado'], 401);
         }
 
         // Obter o usuário logado
