@@ -14,25 +14,74 @@
                 <form action="/register" method="POST">
                     <!-- CSRF Token -->
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    
+                
+                    <!-- Nome -->
                     <div class="mb-3">
                         <label for="name" class="form-label">Nome</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
+                        <input 
+                            type="text" 
+                            class="form-control @error('name') is-invalid @enderror" 
+                            id="name" 
+                            name="name" 
+                            value="{{ old('name') }}" 
+                            required
+                        >
+                        @error('name')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
+                
+                    <!-- E-mail -->
                     <div class="mb-3">
                         <label for="email" class="form-label">E-mail</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
+                        <input 
+                            type="email" 
+                            class="form-control @error('email') is-invalid @enderror" 
+                            id="email" 
+                            name="email" 
+                            value="{{ old('email') }}" 
+                            required 
+                            autofocus
+                        >
+                        @error('email')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
+                
+                    <!-- Senha -->
                     <div class="mb-3">
                         <label for="password" class="form-label">Senha</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
+                        <input 
+                            type="password" 
+                            class="form-control @error('password') is-invalid @enderror" 
+                            id="password" 
+                            name="password" 
+                            required
+                        >
+                        @error('password')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
+                
+                    <!-- Confirmar Senha -->
                     <div class="mb-3">
                         <label for="password_confirmation" class="form-label">Confirmar Senha</label>
-                        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
+                        <input 
+                            type="password" 
+                            class="form-control @error('password_confirmation') is-invalid @enderror" 
+                            id="password_confirmation" 
+                            name="password_confirmation" 
+                            required
+                        >
+                        @error('password_confirmation')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
+                
+                    <!-- Botão de Enviar -->
                     <button type="submit" class="btn btn-primary w-100">Registrar</button>
                 </form>
+                
                 <p class="text-center mt-3">
                     Já tem uma conta? <a href="/login">Faça login</a>
                 </p>
