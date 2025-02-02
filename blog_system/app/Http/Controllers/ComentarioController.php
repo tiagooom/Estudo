@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comentario;
-use App\Models\Artigo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; // Para acessar o usuário logado
-use Illuminate\Validation\ValidationException;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 
 class ComentarioController extends Controller
 {
+    use AuthorizesRequests;
     // Mostrar todos os comentários de um artigo específico
     public function index($artigoId)
     {
@@ -51,6 +52,12 @@ class ComentarioController extends Controller
     public function destroy($id)
     {
         $comentario = Comentario::find($id);
+        
+        $this->authorize('delete', $comentario);
+
+        if (!$comentario) {
+            return response()->json(['success' => false, 'message' => 'Comentário não encontrado'], 404);
+        }
 
         if ($comentario) {
             $comentario->delete();

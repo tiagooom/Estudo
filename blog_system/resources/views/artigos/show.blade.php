@@ -8,12 +8,14 @@
         <p class="text-gray-500 text-sm">Publicado em: {{ $artigo->created_at->format('d/m/Y H:i') }}</p>
         
         <div class="mt-4 flex gap-2">
+            @can('update', $artigo)
             <a href="{{ route('artigos.edit', $artigo->id) }}" class="btn btn-secondary rounded-pill px-3">Editar</a>
             <form action="{{ route('artigos.destroy', $artigo->id) }}" method="POST" style="display:inline;">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-danger rounded-pill px-3">Deletar</button>
             </form>
+            @endcan
         </div>
 
         <hr class="my-4">
@@ -39,8 +41,6 @@
         <!-- Lista de Comentários -->
         <div id="lista-comentarios" class="mt-6">
             <!-- Comentários serão carregados via AJAX -->
-            <i class="bi bi-trash"></i>
-
         </div>
     </div>
 </div>
@@ -49,13 +49,17 @@
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     let artigoId = {{ $artigo->id }};
+    const user_id = {{ auth()->id() }};
+    let user_role = @json(auth()->user()->role);
 
     function carregarComentarios() {
         fetch(`/artigos/${artigoId}/comentarios`)
             .then(response => response.json())
             .then(data => {
                 let comentariosHtml = '';
+                
                 data.forEach(comentario => {
+                    debugger;
                     comentariosHtml += `
                         <div class="bg-gray-100 p-3 my-2 rounded">
                             <p>${comentario.conteudo}</p>
@@ -64,7 +68,12 @@ document.addEventListener("DOMContentLoaded", function () {
                                 ${new Date(comentario.created_at).toLocaleTimeString()} 
                                 Por: ${comentario.user.name}
                             </small>
-                            <button onclick="removerComentario(${comentario.id})" class="p-0 border-0"><i class="bi bi-trash"></i></button>
+
+                            ${user_id === comentario.user_id || user_role === 'admin' ? `
+                                <button onclick="removerComentario(${comentario.id})" class="p-0 border-0">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            ` : ''}
 
                         </div>
                     `;

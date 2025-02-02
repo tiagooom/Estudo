@@ -79,14 +79,15 @@ class ArtigoController extends Controller
         $user = Auth::user();
 
         $artigo = Artigo::findOrFail($id);
-        $this->authorize('delete', $artigo);
+        $this->authorize('update', $artigo);
 
         $validatedData = $request->validate([
             'titulo' => 'required|string|max:255',
-            'corpo' => 'required|string|min:100',
+            'corpo' => 'required|string',
             'categoria_id' => 'required|exists:categorias,id',
-            'user_id' => $user->id,
         ]);
+
+        $validatedData['user_id'] = $user->id;
 
         $artigo->update($validatedData);
 
@@ -96,6 +97,7 @@ class ArtigoController extends Controller
     public function destroy($id)
     {
         $artigo = Artigo::findOrFail($id);
+        $this->authorize('delete', $artigo);
         $artigo->delete();
 
         return redirect()->route('artigos.index')->with('success', 'Artigo deletado com sucesso!');
