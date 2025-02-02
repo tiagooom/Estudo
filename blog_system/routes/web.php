@@ -28,9 +28,14 @@ Route::get('/register', [AuthController::class, 'showregisterForm'])->name('regi
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/artigos/search', [ArtigoController::class, 'search'])->name('artigos.search');
     Route::resource('categorias', CategoriaController::class);
     Route::resource('artigos', ArtigoController::class);
 });
+
+
+
+
 
 
 // routes/web.php

@@ -102,4 +102,25 @@ class ArtigoController extends Controller
 
         return redirect()->route('artigos.index')->with('success', 'Artigo deletado com sucesso!');
     }
+
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+        $categoria_id = $request->input('categoria');
+
+        $artigos = Artigo::when($search, function ($query, $search) {
+                $query->where('titulo', 'like', "%{$search}%")
+                    ->orWhere('corpo', 'like', "%{$search}%");
+            })
+            ->when($categoria_id, function ($query, $categoria_id) {
+                $query->where('categoria_id', $categoria_id);
+            })
+            ->get();
+
+        $categorias = Categoria::all();
+
+        return view('artigos.index', compact('artigos', 'categorias'));
+    }
+
+
 }
