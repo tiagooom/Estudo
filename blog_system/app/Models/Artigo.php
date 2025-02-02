@@ -10,7 +10,7 @@ class Artigo extends Model
     use HasFactory;
 
     // Campos em português
-    protected $fillable = ['titulo', 'corpo', 'categoria_id'];
+    protected $fillable = ['titulo', 'corpo', 'categoria_id', 'user_id'];
 
     // Relação com a Categoria
     public function categoria()
@@ -22,5 +22,10 @@ class Artigo extends Model
     public function comentarios()
     {
         return $this->hasMany(Comentario::class); // Um artigo possui vários comentários
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class); // Um artigo pertence a um usuário
     }
 }

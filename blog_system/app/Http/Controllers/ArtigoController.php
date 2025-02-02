@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Artigo;
 use App\Models\Categoria;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class ArtigoController extends Controller
 {
+    use AuthorizesRequests;
     public function index(Request $request)
     {
         $categoria_id = $request->input('categoria');
@@ -24,11 +27,13 @@ class ArtigoController extends Controller
     }
 
     public function show($id)
-    {
-        $artigo = Artigo::findOrFail($id);
-        $categorias = Categoria::all();
-        return view('artigos.show', compact('artigo', 'categorias'));
-    }
+{
+    $artigo = Artigo::findOrFail($id); 
+    $comentarios = $artigo->comentarios; 
+
+    return view('artigos.show', compact('artigo', 'comentarios'));
+}
+
 
     public function create()
     {
@@ -37,17 +42,26 @@ class ArtigoController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'titulo' => 'required|string|max:255',
-            'corpo' => 'required|string',
-            'categoria_id' => 'required|exists:categorias,id',
-        ]);
-
-        Artigo::create($validatedData);
-
-        return redirect()->route('artigos.index')->with('success', 'Artigo criado com sucesso!');
+{
+    if (!Auth::check()) {
+        return response()->json(['error' => 'Usuário não autenticado'], 401);
     }
+
+    $user = Auth::user();
+
+    $validatedData = $request->validate([
+        'titulo' => 'required|string|max:255',
+        'corpo' => 'required|string',
+        'categoria_id' => 'required|exists:categorias,id',
+    ]);
+
+    $validatedData['user_id'] = $user->id;
+
+    Artigo::create($validatedData);
+
+    return redirect()->route('artigos.index')->with('success', 'Artigo criado com sucesso!');
+}
+
 
     public function edit($id)
     {
@@ -58,14 +72,22 @@ class ArtigoController extends Controller
 
     public function update(Request $request, $id)
     {
+        if (!Auth::check()) {
+            return response()->json(['error' => 'Usuário não autenticado'], 401);
+        }
+        
+        $user = Auth::user();
+
+        $artigo = Artigo::findOrFail($id);
+        $this->authorize('delete', $artigo);
+
         $validatedData = $request->validate([
             'titulo' => 'required|string|max:255',
             'corpo' => 'required|string|min:100',
             'categoria_id' => 'required|exists:categorias,id',
-            'publicado' => 'nullable|boolean',
+            'user_id' => $user->id,
         ]);
 
-        $artigo = Artigo::findOrFail($id);
         $artigo->update($validatedData);
 
         return redirect()->route('artigos.index')->with('success', 'Artigo atualizado com sucesso!');

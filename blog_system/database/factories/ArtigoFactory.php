@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Artigo;
 use App\Models\Categoria;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ArtigoFactory extends Factory
@@ -18,6 +19,7 @@ class ArtigoFactory extends Factory
             'categoria_id' => Categoria::factory(), // Associa o artigo a uma categoria
             'created_at' => now(),
             'updated_at' => now(),
+            'user_id' => User::factory(),
         ];
     }
 }

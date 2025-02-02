@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('titulo'); // Título do artigo
             $table->text('corpo'); // Corpo do artigo
             $table->foreignId('categoria_id')->constrained('categorias')->onDelete('cascade'); // Artigo publicado ou não
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Chave estrangeira para Usuário
             $table->timestamps();
         });
     }
