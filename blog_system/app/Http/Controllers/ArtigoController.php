@@ -13,14 +13,7 @@ class ArtigoController extends Controller
     use AuthorizesRequests;
     public function index(Request $request)
     {
-        $categoria_id = $request->input('categoria');
-
-        if ($categoria_id) {
-            $artigos = Artigo::where('categoria_id', $categoria_id)->get();
-        } else {
-            $artigos = Artigo::all();
-        }
-
+        $artigos = Artigo::paginate(5);
         $categorias = Categoria::all();
 
         return view('artigos.index', compact('artigos', 'categorias'));
@@ -37,7 +30,7 @@ class ArtigoController extends Controller
 
     public function create()
     {
-        $categorias = Categoria::all(); // Pega todas as categorias
+        $categorias = Categoria::all(); 
         return view('artigos.create', compact('categorias'));
     }
 
@@ -108,14 +101,16 @@ class ArtigoController extends Controller
         $search = $request->input('search');
         $categoria_id = $request->input('categoria');
 
-        $artigos = Artigo::when($search, function ($query, $search) {
-                $query->where('titulo', 'like', "%{$search}%")
-                    ->orWhere('corpo', 'like', "%{$search}%");
-            })
-            ->when($categoria_id, function ($query, $categoria_id) {
-                $query->where('categoria_id', $categoria_id);
-            })
-            ->get();
+        $artigos = Artigo::query()
+        ->when($search, function ($query, $search) {
+            return $query->where('titulo', 'like', '%' . $search . '%')
+                        ->orWhere('corpo', 'like', '%' . $search . '%');
+        })
+        ->when($categoria_id, function ($query, $categoria_id) {
+            return $query->where('categoria_id', $categoria_id);
+        })
+        ->paginate(5);
+
 
         $categorias = Categoria::all();
 

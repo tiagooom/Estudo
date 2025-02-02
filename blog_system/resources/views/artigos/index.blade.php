@@ -58,5 +58,9 @@
                 </div>
             </a>
         @endforeach
+        <div class="d-flex justify-content-center my-4">
+            {{ $artigos->appends(request()->query())->links('pagination::bootstrap-4') }}
+        </div>
+        
     @endif
 @endsection
