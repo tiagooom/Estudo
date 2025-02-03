@@ -32,7 +32,7 @@
                         placeholder="Digite o título ou conteúdo"
                         value="{{ request()->get('search') }}"
                     >
-                    <button type="submit" class="btn btn-primary">Buscar</button>
+                    <button type="submit" class="btn btn-secondary px-3 ms-2">Buscar</button>
                 </div>
             </div>
         </div>
