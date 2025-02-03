@@ -5,7 +5,7 @@
 @section('content')
     <h1>Artigos</h1>
 
-    <form action="{{ route('artigos.search') }}" method="GET" class="mb-4">
+    <form action="{{ route('artigos.search') }}" method="GET" >
         <div class="row g-3">
             <!-- Filtro por categoria -->
             <div class="col-md-4">
@@ -37,8 +37,6 @@
             </div>
         </div>
     </form>
-    
-    
 
     <!-- Botão para criar artigo -->
     <a href="{{ route('artigos.create') }}" class="btn btn-primary rounded-pill px-3 my-3">Criar Artigo</a>
@@ -58,7 +56,7 @@
                 </div>
             </a>
         @endforeach
-        <div class="d-flex justify-content-center my-4">
+        <div class="d-flex justify-content-center">
             {{ $artigos->appends(request()->query())->links('pagination::bootstrap-4') }}
         </div>
         

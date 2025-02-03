@@ -13,7 +13,7 @@ class ArtigoController extends Controller
     use AuthorizesRequests;
     public function index(Request $request)
     {
-        $artigos = Artigo::paginate(5);
+        $artigos = Artigo::paginate(6);
         $categorias = Categoria::all();
 
         return view('artigos.index', compact('artigos', 'categorias'));
@@ -109,7 +109,7 @@ class ArtigoController extends Controller
         ->when($categoria_id, function ($query, $categoria_id) {
             return $query->where('categoria_id', $categoria_id);
         })
-        ->paginate(5);
+        ->paginate(6);
 
 
         $categorias = Categoria::all();
