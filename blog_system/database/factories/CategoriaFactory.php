@@ -12,7 +12,7 @@ class CategoriaFactory extends Factory
     public function definition()
     {
         return [
-            'nome' => $this->faker->unique->word, // Nome fictício para a categoria
+            'nome' => $this->faker->unique()->word,
             'created_at' => now(),
             'updated_at' => now(),
         ];
