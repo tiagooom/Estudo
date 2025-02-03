@@ -22,15 +22,15 @@
     
             <!-- Filtro por titulo ou conteudo -->
             <div class="col-md-6">
-                <label for="search" class="form-label">Buscar em titulos e conteúdo</label>
+                <label for="titulo" class="form-label">Buscar em titulos e conteúdo</label>
                 <div class="input-group">
                     <input 
                         type="text" 
-                        id="search" 
-                        name="search" 
+                        id="titulo" 
+                        name="titulo" 
                         class="form-control" 
                         placeholder="Digite o título ou conteúdo"
-                        value="{{ request()->get('search') }}"
+                        value="{{ request()->get('titulo') }}"
                     >
                     <button type="submit" class="btn btn-secondary px-3 ms-2">Buscar</button>
                 </div>

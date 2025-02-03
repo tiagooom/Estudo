@@ -98,13 +98,13 @@ class ArtigoController extends Controller
 
     public function search(Request $request)
     {
-        $search = $request->input('search');
+        $titulo = $request->input('titulo');
         $categoria_id = $request->input('categoria');
 
         $artigos = Artigo::query()
-        ->when($search, function ($query, $search) {
-            return $query->where('titulo', 'like', '%' . $search . '%')
-                        ->orWhere('corpo', 'like', '%' . $search . '%');
+        ->when($titulo, function ($query, $titulo) {
+            return $query->where('titulo', 'like', '%' . $titulo . '%')
+                        ->orWhere('corpo', 'like', '%' . $titulo . '%');
         })
         ->when($categoria_id, function ($query, $categoria_id) {
             return $query->where('categoria_id', $categoria_id);
