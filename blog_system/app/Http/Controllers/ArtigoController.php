@@ -7,25 +7,38 @@ use App\Models\Categoria;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Cache;
 
 class ArtigoController extends Controller
 {
     use AuthorizesRequests;
+
     public function index(Request $request)
     {
-        $artigos = Artigo::paginate(6);
+        $page = $request->input('page', 1);
+    
+        if ($page == 1) {
+            // Apenas a página 1 será armazenada no cache
+            $artigos = Cache::remember("artigos_lista_page_1", 60, function () {
+                return Artigo::orderBy('created_at', 'desc')->paginate(6);
+            });
+        } else {
+            // Outras páginas sempre serão buscadas diretamente do banco
+            $artigos = Artigo::orderBy('created_at', 'desc')->paginate(6);
+        }
+    
         $categorias = Categoria::all();
-
         return view('artigos.index', compact('artigos', 'categorias'));
     }
+    
 
     public function show($id)
-{
-    $artigo = Artigo::findOrFail($id); 
-    $comentarios = $artigo->comentarios; 
+    {
+        $artigo = Artigo::findOrFail($id); 
+        $comentarios = $artigo->comentarios; 
 
-    return view('artigos.show', compact('artigo', 'comentarios'));
-}
+        return view('artigos.show', compact('artigo', 'comentarios'));
+    }
 
 
     public function create()
@@ -51,6 +64,7 @@ class ArtigoController extends Controller
     $validatedData['user_id'] = $user->id;
 
     Artigo::create($validatedData);
+    Cache::forget("artigos_lista_page_1");
 
     return redirect()->route('artigos.index')->with('success', 'Artigo criado com sucesso!');
 }
@@ -83,6 +97,7 @@ class ArtigoController extends Controller
         $validatedData['user_id'] = $user->id;
 
         $artigo->update($validatedData);
+        Cache::forget("artigos_lista_page_1");
 
         return redirect()->route('artigos.index')->with('success', 'Artigo atualizado com sucesso!');
     }
@@ -92,6 +107,7 @@ class ArtigoController extends Controller
         $artigo = Artigo::findOrFail($id);
         $this->authorize('delete', $artigo);
         $artigo->delete();
+        Cache::forget("artigos_lista_page_1");
 
         return redirect()->route('artigos.index')->with('success', 'Artigo deletado com sucesso!');
     }
