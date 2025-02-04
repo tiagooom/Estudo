@@ -1,66 +1,105 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
 
-## About Laravel
+## Blog System
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Este é um sistema de blog desenvolvido em Laravel, permitindo que usuários autenticados possam criar, editar e excluir artigos. O sistema inclui autenticação segura, controle de permissões, categorização de artigos, sistema de comentários e caching para otimização de desempenho.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Requisitos
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **[PHP]()**
+- **[Composer]()**
+- **[MySQL]()**
+- **[Laravel]()**
 
-## Learning Laravel
+## Instalação
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. Clone o repositório:
+   
+   ```bash
+   git clone https://github.com/tiagooom/Estudo.git
+   cd ../Estudo/blog_system
+2. Instalar as dependecias do laravel:
+   
+   ```bash
+   composer install
+3. Copie e configure o arquivo .env para o banco de dados escolhido:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+    ```bash
+    cp .env.example .env
+4. Gere a chave da aplicação:
+   
+   ```bash
+    php artisan key:generate
+5. Execute as migrações e seeders:
+   
+   ```bash
+   php artisan migrate
+6. Popular banco para teste e criação do usuario admin:
+   
+   ```bash
+   php artisan db:seed
+7. Iniciar servidor de desenvolvimento:
+   
+   ```bash   
+    php artisan serve
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Funcionalidades Implementadas
 
-## Laravel Sponsors
+1.1 Autenticação e Autorização
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Registro e login de usuários.
 
-### Premium Partners
+Hashing seguro de senhas.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+Diferenciação entre usuários comuns e administradores.
 
-## Contributing
+1.2 CRUD de Artigos
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Criar, editar e excluir artigos.
 
-## Code of Conduct
+Listagem paginada dos artigos.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Filtragem de artigos por categoria.
 
-## Security Vulnerabilities
+Ordenação dos artigos por mais recentes.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+1.3 Categorização
 
-## License
+Criação e gerenciamento de categorias.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Associação de artigos a categorias.
+
+1.4 Sistema de Comentários
+
+Adicionar, visualizar e excluir comentários nos artigos.
+
+1.5 Caching
+
+Implementação de cache para a primeira página da listagem de artigos para melhorar desempenho.
+
+Atualização automática do cache ao criar, editar ou excluir artigos.
+
+## Uso do Sistema
+
+Acesso ao Sistema
+
+Faça login com o usuario admin ou cadastra-se.
+
+Acesse a página principal para visualizar os artigos.
+
+Utilize o menu para criar novos artigos ou administrar categorias (se for administrador).
+
+Gerenciamento de Artigos
+
+Para criar um artigo, clique em "Novo Artigo", preencha os campos e salve.
+
+Para editar, clique no botão "Editar" ao lado do artigo desejado (se for administrador ou dono do artigo).
+
+Para excluir, utilize o botão "Excluir" (se for administrador ou dono do artigo).
+
+Comentários
+
+Na página de um artigo, adicione um comentário preenchendo o campo correspondente.
+
+O administrador e os usuários podem excluir seus próprios comentários.
