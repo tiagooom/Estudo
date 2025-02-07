@@ -7,45 +7,67 @@ use App\Models\Product;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $products = Product::all();
-
         return response()->json($products);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric',
+            'image' => 'nullable|url',
+        ]);
+
+        $product = Product::create($request->all());
+
+        return response()->json($product, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-        //
+        $product = Product::find($id);
+
+        if ($product) {
+            return response()->json($product);
+        }
+
+        return response()->json(['message' => 'Produto não encontrado'], 404);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'string|max:255',
+            'description' => 'string',
+            'price' => 'numeric',
+            'image' => 'nullable|url',
+        ]);
+
+        $product = Product::find($id);
+
+        if (!$product) {
+            return response()->json(['message' => 'Produto não encontrado'], 404);
+        }
+
+        $product->update($request->all());
+
+        return response()->json($product);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        //
+        $product = Product::find($id);
+
+        if (!$product) {
+            return response()->json(['message' => 'Produto não encontrado'], 404);
+        }
+
+        $product->delete();
+
+        return response()->json(['message' => 'Produto excluído com sucesso']);
     }
 }
