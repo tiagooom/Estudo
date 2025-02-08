@@ -35,7 +35,7 @@ function ProductCard({ product }) {
       </CardContent>
       <CardActions sx={{ justifyContent: 'flex-end' }}>
         <Button size="small" variant="contained" component={Link} to={`/products/${product.id}`}>
-          View Details
+          Ver detalhes
         </Button>
       </CardActions>
     </Card>

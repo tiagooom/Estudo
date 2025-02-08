@@ -18,7 +18,7 @@ function Navbar() {
           Produtos
         </Button>
         <Button color="inherit" component={Link} to="/cart">
-          Cart
+          Carrinho
         </Button>
       </Toolbar>
     </AppBar>
