@@ -10,7 +10,7 @@ Route::apiResource('products', ProductController::class);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    return response()->json(['user' => $request->user()]);
 });
 
 
