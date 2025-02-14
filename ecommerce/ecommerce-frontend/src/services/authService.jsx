@@ -6,7 +6,7 @@ export const login = async (email, password) => {
     localStorage.setItem('authToken', response.data.token);
     // Configura o header default do Axios para requisições autenticadas
     api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
-    return 'response.data';
+    return response.data;
   } catch (error) {
     throw error;
   }

@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('authToken', response.token);
         api.defaults.headers.Authorization = `Bearer ${response.token}`;
         const userData = await getUser();
-        setUser(userData.user); // Atualiza o usuário no contexto
+        setUser(userData.user);
       }
     } catch (error) {
       console.error('Erro no login:', error);
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
       await authLogout();
       localStorage.removeItem('authToken');
       delete api.defaults.headers.common['Authorization'];
-      setUser(null); // Atualiza o estado do usuário
+      setUser(null);
     } catch (error) {
       console.error('Erro no logout:', error);
     }

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -16,7 +17,9 @@ import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import ForgotPassword from '../components/ForgotPassword';
 import AppTheme from '../shared-theme/AppTheme';
-import { login as loginService } from '../services/authService'; 
+import { AuthContext } from '../context/AuthContext';
+
+
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -67,6 +70,7 @@ export default function SignIn(props) {
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [loginError, setLoginError] = React.useState('');
   const [open, setOpen] = React.useState(false);
+  const { login } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -93,9 +97,9 @@ export default function SignIn(props) {
       setEmailErrorMessage('');
     }
 
-    if (!password.value || password.value.length < 6) {
+    if (!password.value || password.value.length < 0) {
       setPasswordError(true);
-      setPasswordErrorMessage('Password must be at least 6 characters long.');
+      setPasswordErrorMessage('Senha deve ser no mínimo com 4 caracteres');
       isValid = false;
     } else {
       setPasswordError(false);
@@ -108,7 +112,7 @@ export default function SignIn(props) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoginError('');
-    
+
     if (!validateInputs()) {
       return;
     }
@@ -118,8 +122,8 @@ export default function SignIn(props) {
     const password = data.get('password');
 
     try {
-      const response = await loginService(email, password);
-      console.log('Usuário logado:', response.user);
+      await login(email, password);
+      console.log('Usuário logado com sucesso');
       navigate('/products');
     } catch (error) {
       setLoginError('Erro no login. Verifique suas credenciais.');
