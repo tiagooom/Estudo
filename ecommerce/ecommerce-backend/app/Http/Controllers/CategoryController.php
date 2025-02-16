@@ -19,7 +19,7 @@ class CategoryController extends Controller
             'name' => 'required|unique:categories,name'
         ]);
 
-        $category = Category::create($request->only('name'));
+        $category = Category::create($request->only('name', 'description'));
 
         return response()->json($category, 201);
     }
