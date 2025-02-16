@@ -1,11 +1,15 @@
-import React, { useContext } from 'react';
-import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
+import React, { useContext, useState } from 'react';
+import { AppBar, Toolbar, Typography, Button, Box, Menu, MenuItem } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
 function Navbar() {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+  
+  const [anchorEl, setAnchorEl] = useState(null);
+  const handleMenuOpen = (event) => setAnchorEl(event.currentTarget);
+  const handleMenuClose = () => setAnchorEl(null);
 
   const handleLogout = () => {
     console.log('Chamando logout do AuthContext...');
@@ -30,11 +34,39 @@ function Navbar() {
           <Button color="inherit" component={Link} to="/cart">
             Carrinho
           </Button>
+
+          {/* Dropdown do Admin */}
+          {user && user && (
+            <>
+              <Button color="inherit" onClick={handleMenuOpen}>
+                Admin
+              </Button>
+              <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+                <MenuItem component={Link} to="/admin/categories" onClick={handleMenuClose}>
+                  Categorias
+                </MenuItem>
+                <MenuItem component={Link} to="/admin/products" onClick={handleMenuClose}>
+                  Produtos
+                </MenuItem>
+              </Menu>
+            </>
+          )}
         </Box>
 
         {/* Exibe informações do usuário se estiver logado */}
         {user ? (
           <>
+            <Button color="inherit" onClick={handleMenuOpen}>
+              Admin
+            </Button>
+            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+              <MenuItem component={Link} to="/admin/categories" onClick={handleMenuClose}>
+                Categorias
+              </MenuItem>
+              <MenuItem component={Link} to="/admin/products" onClick={handleMenuClose}>
+                Produtos
+              </MenuItem>
+            </Menu>
             <Typography variant="body1" sx={{ marginRight: 2 }}>
               Olá, {user.name || 'Usuário'}
             </Typography>
