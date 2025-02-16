@@ -11,8 +11,9 @@ import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
 import AddProduct from "./pages/AddProduct";
 import Cart from "./pages/Cart";
+import AdminCategoria from "./pages/AdminCategory";
+import AdminProduct from "./pages/AdminProduct";
 
-// Criação do tema com Material UI
 const theme = createTheme({
   palette: {
     mode: "light",
@@ -44,6 +45,8 @@ function Layout() {
         <Route path="/products" element={<Products />} />
         <Route path="/products/:id" element={<ProductDetail />} />
         <Route path="/products/add" element={<AddProduct />} />
+        <Route path="/admin/categories" element={<AdminCategoria />} />
+        <Route path="/admin/products" element={<AdminProduct />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
