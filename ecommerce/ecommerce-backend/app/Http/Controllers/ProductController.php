@@ -19,7 +19,7 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric',
-            'image' => 'nullable|url',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $product = Product::create($request->all());
@@ -27,10 +27,8 @@ class ProductController extends Controller
         return response()->json($product, 201);
     }
 
-    public function show(string $id)
+    public function show(Product $product)
     {
-        $product = Product::find($id);
-
         if ($product) {
             return response()->json($product);
         }
@@ -38,34 +36,22 @@ class ProductController extends Controller
         return response()->json(['message' => 'Produto não encontrado'], 404);
     }
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, Product $product)
     {
         $request->validate([
             'name' => 'string|max:255',
             'description' => 'string',
             'price' => 'numeric',
-            'image' => 'nullable|url',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
-        $product = Product::find($id);
-
-        if (!$product) {
-            return response()->json(['message' => 'Produto não encontrado'], 404);
-        }
 
         $product->update($request->all());
 
         return response()->json($product);
     }
 
-    public function destroy(string $id)
+    public function destroy(Product $product)
     {
-        $product = Product::find($id);
-
-        if (!$product) {
-            return response()->json(['message' => 'Produto não encontrado'], 404);
-        }
-
         $product->delete();
 
         return response()->json(['message' => 'Produto excluído com sucesso']);
