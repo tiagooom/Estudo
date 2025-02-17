@@ -15,9 +15,12 @@ import {
   TableRow,
   TextField,
   Typography,
+  IconButton,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { getCategories, createCategory, updateCategory, deleteCategory } from '../services/categoryService';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 
 const Container = styled(Box)(({ theme }) => ({
@@ -114,12 +117,12 @@ export default function AdminCategories() {
                 <TableCell>{category.name}</TableCell>
                 <TableCell>{category.description}</TableCell>
                 <TableCell align="right">
-                  <Button size="small" onClick={() => handleOpenDialog(category)}>
-                    Editar
-                  </Button>
-                  <Button size="small" color="error" onClick={() => handleDelete(category.id)}>
-                    Deletar
-                  </Button>
+                  <IconButton size="small" onClick={() => handleOpenDialog(category)}>
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton size="small" color="error" onClick={() => handleDelete(category.id)}>
+                    <DeleteIcon />
+                  </IconButton>
                 </TableCell>
               </TableRow>
             ))}
