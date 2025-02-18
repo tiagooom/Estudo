@@ -34,9 +34,12 @@ function Navbar() {
           <Button color="inherit" component={Link} to="/cart">
             Carrinho
           </Button>
+        </Box>
 
-          {/* Dropdown do Admin */}
-          {user && user && (
+        {/* Exibe informações do usuário se estiver logado */}
+        {user ? (
+        <>
+          {user.role === 'admin' && ( // Verifica se o usuário é admin antes de exibir o menu
             <>
               <Button color="inherit" onClick={handleMenuOpen}>
                 Admin
@@ -51,39 +54,24 @@ function Navbar() {
               </Menu>
             </>
           )}
-        </Box>
-
-        {/* Exibe informações do usuário se estiver logado */}
-        {user ? (
-          <>
-            <Button color="inherit" onClick={handleMenuOpen}>
-              Admin
-            </Button>
-            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-              <MenuItem component={Link} to="/admin/categories" onClick={handleMenuClose}>
-                Categorias
-              </MenuItem>
-              <MenuItem component={Link} to="/admin/products" onClick={handleMenuClose}>
-                Produtos
-              </MenuItem>
-            </Menu>
-            <Typography variant="body1" sx={{ marginRight: 2 }}>
-              Olá, {user.name || 'Usuário'}
-            </Typography>
-            <Button color="inherit" onClick={handleLogout}>
-              Logout
-            </Button>
-          </>
-        ) : (
-          <>
-            <Button color="inherit" component={Link} to="/login">
-              Login
-            </Button>
-            <Button color="inherit" component={Link} to="/register">
-              Registrar
-            </Button>
-          </>
-        )}
+          
+          <Typography variant="body1" sx={{ marginRight: 2 }}>
+            Olá, {user.name || 'Usuário'}
+          </Typography>
+          <Button color="inherit" onClick={handleLogout}>
+            Logout
+          </Button>
+        </>
+      ) : (
+        <>
+          <Button color="inherit" component={Link} to="/login">
+            Login
+          </Button>
+          <Button color="inherit" component={Link} to="/register">
+            Registrar
+          </Button>
+        </>
+      )}
       </Toolbar>
     </AppBar>
   );
