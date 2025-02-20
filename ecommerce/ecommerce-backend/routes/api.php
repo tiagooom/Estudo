@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 // Rotas públicas
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
 Route::apiResource('products', ProductController::class)->only(['index', 'show']);;
 
 // Grupo de rotas que exigem autenticação via Sanctum
