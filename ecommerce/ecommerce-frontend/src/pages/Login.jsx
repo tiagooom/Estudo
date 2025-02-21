@@ -19,8 +19,6 @@ import ForgotPassword from '../components/ForgotPassword';
 import AppTheme from '../shared-theme/AppTheme';
 import { AuthContext } from '../context/AuthContext';
 
-
-
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
@@ -90,14 +88,14 @@ export default function SignIn(props) {
 
     if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
       setEmailError(true);
-      setEmailErrorMessage('Please enter a valid email address.');
+      setEmailErrorMessage('Por favor, insira um email válido.');
       isValid = false;
     } else {
       setEmailError(false);
       setEmailErrorMessage('');
     }
 
-    if (!password.value || password.value.length < 0) {
+    if (!password.value || password.value.length < 3) {
       setPasswordError(true);
       setPasswordErrorMessage('Senha deve ser no mínimo com 4 caracteres');
       isValid = false;
@@ -172,7 +170,7 @@ export default function SignIn(props) {
               />
             </FormControl>
             <FormControl>
-              <FormLabel htmlFor="password">Password</FormLabel>
+              <FormLabel htmlFor="password">Senha</FormLabel>
               <TextField
                 error={passwordError}
                 helperText={passwordErrorMessage}
@@ -194,7 +192,7 @@ export default function SignIn(props) {
             )}
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              label="Lembrar-me"
             />
             <ForgotPassword open={open} handleClose={handleClose} />
             <Button
@@ -211,19 +209,19 @@ export default function SignIn(props) {
               variant="body2"
               sx={{ alignSelf: 'center' }}
             >
-              Forgot your password?
+              Esqueceu a senha?
             </Link>
           </Box>
-          <Divider>or</Divider>
+          <Divider>ou</Divider>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Typography sx={{ textAlign: 'center' }}>
-              Não tem uma conta?{' '}
+              Ainda não tem uma conta?{' '}
               <Link
                 href="/register"
                 variant="body2"
                 sx={{ alignSelf: 'center' }}
               >
-                Registrar
+                Cadastre-se
               </Link>
             </Typography>
           </Box>
