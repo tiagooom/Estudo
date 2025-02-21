@@ -1,10 +1,11 @@
 import * as React from 'react';
+import { useContext } from 'react';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
 import Link from '@mui/material/Link';
@@ -14,6 +15,7 @@ import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import AppTheme from '../shared-theme/AppTheme';
+import { AuthContext } from '../context/AuthContext';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -62,37 +64,52 @@ export default function SignUp(props) {
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
+  const [passwordConfirmationError, setpasswordConfirmationError] = React.useState(false);
+  const [passwordConfirmationErrorMessage, setpasswordConfirmationErrorMessage] = React.useState('');
   const [nameError, setNameError] = React.useState(false);
   const [nameErrorMessage, setNameErrorMessage] = React.useState('');
+  const { register } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const [errors, setErrors] = useState({});
 
   const validateInputs = () => {
     const email = document.getElementById('email');
     const password = document.getElementById('password');
+    const passwordConfirmation = document.getElementById('passwordConfirmation');
     const name = document.getElementById('name');
 
     let isValid = true;
 
     if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
       setEmailError(true);
-      setEmailErrorMessage('Please enter a valid email address.');
+      setEmailErrorMessage('Por favor, insira um email válido.');
       isValid = false;
     } else {
       setEmailError(false);
       setEmailErrorMessage('');
     }
-
+  
     if (!password.value || password.value.length < 6) {
       setPasswordError(true);
-      setPasswordErrorMessage('Password must be at least 6 characters long.');
+      setPasswordErrorMessage('A senha deve ter pelo menos 6 caracteres.');
       isValid = false;
     } else {
       setPasswordError(false);
       setPasswordErrorMessage('');
     }
-
+  
+    if (passwordConfirmation.value !== password.value) {
+      setpasswordConfirmationError(true);
+      setpasswordConfirmationErrorMessage('As senhas não coincidem.');
+      isValid = false;
+    } else {
+      setpasswordConfirmationError(false);
+      setpasswordConfirmationErrorMessage('');
+    }
+  
     if (!name.value || name.value.length < 1) {
       setNameError(true);
-      setNameErrorMessage('Name is required.');
+      setNameErrorMessage('O nome é obrigatório.');
       isValid = false;
     } else {
       setNameError(false);
@@ -102,18 +119,28 @@ export default function SignUp(props) {
     return isValid;
   };
 
-  const handleSubmit = (event) => {
-    if (nameError || emailError || passwordError) {
-      event.preventDefault();
-      return;
-    }
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+   
     const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get('name'),
-      lastName: data.get('lastName'),
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const name = data.get("name");
+    const email = data.get("email");
+    const password = data.get("password");
+    const passwordConfirmation = data.get("passwordConfirmation");
+  
+    try {
+      await register(name, email, password, passwordConfirmation);
+      navigate("/"); 
+    } catch (err) {
+      console.error("Erro ao registrar:", err);
+    
+      if (err.response && err.response.status === 422) {
+        // Captura os erros de validação do backend
+        setErrors(err.response.data.errors);
+      } else {
+        setErrors({ apiError: "Falha ao registrar. Tente novamente." });
+      }
+    }
   };
 
   return (
@@ -141,10 +168,10 @@ export default function SignUp(props) {
                 required
                 fullWidth
                 id="name"
-                placeholder="Jon Snow"
-                error={nameError}
-                helperText={nameErrorMessage}
-                color={nameError ? 'error' : 'primary'}
+                placeholder="Seu nome"
+                error={!!nameError || !!errors?.name} 
+                helperText={nameErrorMessage || (errors?.name ? errors.name[0] : "")} 
+                color={nameError || errors?.name ? "error" : "primary"}
               />
             </FormControl>
             <FormControl>
@@ -157,13 +184,13 @@ export default function SignUp(props) {
                 name="email"
                 autoComplete="email"
                 variant="outlined"
-                error={emailError}
-                helperText={emailErrorMessage}
-                color={passwordError ? 'error' : 'primary'}
+                error={!!emailError || !!errors?.email} 
+                helperText={emailErrorMessage || (errors?.email ? errors.email[0] : "")} 
+                color={emailError || errors?.email ? "error" : "primary"}
               />
             </FormControl>
             <FormControl>
-              <FormLabel htmlFor="password">Password</FormLabel>
+              <FormLabel htmlFor="password">Senha</FormLabel>
               <TextField
                 required
                 fullWidth
@@ -173,9 +200,25 @@ export default function SignUp(props) {
                 id="password"
                 autoComplete="new-password"
                 variant="outlined"
-                error={passwordError}
-                helperText={passwordErrorMessage}
-                color={passwordError ? 'error' : 'primary'}
+                error={!!passwordError || !!errors?.password} 
+                helperText={passwordErrorMessage || (errors?.password ? errors.password[0] : "")} 
+                color={passwordError || errors?.password ? "error" : "primary"}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="passwordConfirmation">Confirme a Senha</FormLabel>
+              <TextField
+                required
+                fullWidth
+                name="passwordConfirmation"
+                placeholder="••••••"
+                type="password"
+                id="passwordConfirmation"
+                autoComplete="new-password"
+                variant="outlined"
+                error={!!passwordConfirmationError || !!errors?.passwordConfirmation} 
+                helperText={passwordConfirmationErrorMessage || (errors?.passwordConfirmation ? errors.passwordConfirmation[0] : "")} 
+                color={passwordConfirmationError || errors?.passwordConfirmation ? "error" : "primary"}
               />
             </FormControl>
             <Button
@@ -188,17 +231,17 @@ export default function SignUp(props) {
             </Button>
           </Box>
           <Divider>
-            <Typography sx={{ color: 'text.secondary' }}>or</Typography>
+            <Typography sx={{ color: 'text.secondary' }}>ou</Typography>
           </Divider>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Typography sx={{ textAlign: 'center' }}>
-              Already have an account?{' '}
+              Já tem uma conta?{' '}
               <Link
                 href="/login"
                 variant="body2"
                 sx={{ alignSelf: 'center' }}
               >
-                Login
+                Entrar
               </Link>
             </Typography>
           </Box>
