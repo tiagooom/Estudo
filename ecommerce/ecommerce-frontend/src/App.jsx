@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
 import { AuthProvider } from "./context/AuthContext";
-
+import { CartProvider } from "./context/CartContext"; 
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -13,7 +13,7 @@ import AddProduct from "./pages/AddProduct";
 import Cart from "./pages/Cart";
 import AdminCategoria from "./pages/AdminCategory";
 import AdminProduct from "./pages/AdminProduct";
-import AdminRoute from "./components/AdminRoute"; // 🔹 Importando a proteção de rota
+import AdminRoute from "./components/AdminRoute";
 
 const theme = createTheme({
   palette: {
@@ -27,7 +27,9 @@ function App() {
       <CssBaseline />
       <Router>
         <AuthProvider>
-          <Layout />
+          <CartProvider> 
+            <Layout />
+          </CartProvider>
         </AuthProvider>
       </Router>
     </ThemeProvider>
