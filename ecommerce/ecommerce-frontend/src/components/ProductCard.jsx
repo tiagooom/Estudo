@@ -1,19 +1,27 @@
 import React from 'react';
 import { Card, CardContent, CardMedia, CardActions, Typography, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { useCart } from '../context/CartContext'; 
 
-function ProductCard({ product }) {
+function ProductCard({ product, toggleDrawer }) {
+
+  const { addToCart } = useCart();
+
+  const handleBuy = () => {
+    addToCart(product.id, 1);
+    toggleDrawer(); 
+  };
+
   return (
     <Card sx={{
       maxWidth: 345, 
       m: 2, 
       boxShadow: 3, 
       borderRadius: 2, 
-      height: { xs: 'auto', sm: '200px' }, // Altura fixa em telas maiores e ajustável em telas menores
+      height: { xs: 'auto', sm: '200px' }, 
       display: 'flex', 
       flexDirection: 'column'
     }}>
-      {/* Se o produto tiver imagem, exibe */}
       {product.image && (
         <CardMedia
           component="img"
@@ -36,6 +44,9 @@ function ProductCard({ product }) {
       <CardActions sx={{ justifyContent: 'flex-end' }}>
         <Button size="small" variant="contained" component={Link} to={`/products/${product.id}`}>
           Ver detalhes
+        </Button>
+        <Button size="small" variant="contained" onClick={handleBuy}>
+          Comprar
         </Button>
       </CardActions>
     </Card>
