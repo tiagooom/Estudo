@@ -11,6 +11,7 @@ import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
 import AddProduct from "./pages/AddProduct";
 import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
 import AdminCategoria from "./pages/AdminCategory";
 import AdminProduct from "./pages/AdminProduct";
 import AdminRoute from "./components/AdminRoute";
@@ -49,6 +50,7 @@ function Layout() {
         <Route path="/products/:id" element={<ProductDetail />} />
         <Route path="/products/add" element={<AddProduct />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 

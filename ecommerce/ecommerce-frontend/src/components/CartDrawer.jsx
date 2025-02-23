@@ -1,5 +1,6 @@
 import React from 'react';
 import { Drawer, List, ListItem, ListItemText, Typography, IconButton, Badge, Button } from '@mui/material';
+import { Link } from 'react-router-dom';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -66,7 +67,8 @@ function CartDrawer({ isOpen, toggleDrawer, products }) {
           variant="contained" 
           color="primary" 
           sx={{ width: '100%', mt: 2 }}
-          onClick={() => {/* Lógica para finalizar compra */}}
+          component={Link}
+          to={`/checkout`}
         >
           Finalizar Compra
         </Button>
