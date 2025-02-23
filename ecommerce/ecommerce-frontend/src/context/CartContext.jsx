@@ -12,7 +12,7 @@ export const CartProvider = ({ children }) => {
     
     if (token) {
       try {
-        const response = await api.get('/cart'); // Ajuste conforme necessário
+        const response = await api.get('/cart');
         setCart(response.data);
       } catch (error) {
         console.error("Erro ao carregar carrinho:", error);
@@ -35,8 +35,9 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem('cart', JSON.stringify(newCart));
   };
 
-  const addToCart = async (productId, quantity) => {
+  const addToCart = async (productId, quantity = 1) => {
     const token = localStorage.getItem('token');
+
     if (token) {
       try {
         await api.post('/cart', { product_id: productId, quantity });
@@ -45,16 +46,62 @@ export const CartProvider = ({ children }) => {
         console.error("Erro ao adicionar ao carrinho:", error);
       }
     } else {
-      const newCart = [...cart];  
-      const itemIndex = newCart.findIndex((item) => item.product_id === productId);
-      
-      if (itemIndex !== -1) {
-        newCart[itemIndex].quantity += quantity;
-      } else {
-        newCart.push({ product_id: productId, quantity });
-      }
+      setCart((prevCart) => {
+        const updatedCart = prevCart.map((item) =>
+          item.product_id === productId ? { ...item, quantity: item.quantity + quantity } : item
+        );
 
-      saveCart(newCart);
+        const itemExists = prevCart.some((item) => item.product_id === productId);
+        if (!itemExists) {
+          updatedCart.push({ product_id: productId, quantity });
+        }
+
+        saveCart(updatedCart);
+        return updatedCart;
+      });
+    }
+  };
+
+  const decreaseQuantity = async (productId) => {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      try {
+        await api.put('/cart/decrease', { product_id: productId });
+        loadCart();
+      } catch (error) {
+        console.error("Erro ao diminuir quantidade:", error);
+      }
+    } else {
+      setCart((prevCart) => {
+        const updatedCart = prevCart
+          .map((item) =>
+            item.product_id === productId ? { ...item, quantity: item.quantity - 1 } : item
+          )
+          .filter((item) => item.quantity > 0);
+
+        saveCart(updatedCart);
+        return updatedCart;
+      });
+    }
+  };
+
+  const removeFromCart = async (productId) => {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      try {
+        await api.delete(`/cart/${productId}`);
+        loadCart();
+      } catch (error) {
+        console.error("Erro ao remover item do carrinho:", error);
+      }
+    } else {
+      setCart((prevCart) => {
+        const updatedCart = prevCart.filter((item) => item.product_id !== productId);
+        saveCart(updatedCart);
+        return updatedCart;
+      });
     }
   };
 
@@ -75,7 +122,7 @@ export const CartProvider = ({ children }) => {
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, clearCart }}>
+    <CartContext.Provider value={{ cart, addToCart, decreaseQuantity, removeFromCart, clearCart }}>
       {children}
     </CartContext.Provider>
   );
