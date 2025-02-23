@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Container, Typography, Grid, Button, Drawer, List, ListItem, ListItemText, Badge, IconButton } from '@mui/material';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { Box, Container, Typography, Grid } from '@mui/material';
 import ProductCard from '../components/ProductCard';
 import api from '../services/api';
-import { useCart } from '../context/CartContext'; 
+import CartDrawer from '../components/CartDrawer';
 
 function Products() {
   const [products, setProducts] = useState([]);
-  const { cart } = useCart();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  console.log(cart);
+  
   useEffect(() => {
     api.get('/products')
       .then(response => setProducts(response.data))
@@ -21,66 +18,8 @@ function Products() {
 
   return (
     <Box>
-      {/* Drawer do carrinho */}
-      <Drawer
-        anchor="right"
-        open={isDrawerOpen}
-        onClose={toggleDrawer}
-        sx={{
-          '& .MuiDrawer-paper': { width: 300, padding: 2 },
-        }}
-      >
-        <Typography variant="h6">Carrinho de Compras</Typography>
-        <List>
-          {cart.length === 0 ? (
-            <ListItem>
-              <ListItemText primary="Carrinho vazio" />
-            </ListItem>
-          ) : (
-            cart.map((item, index) => (
-              <ListItem key={index}>
-                <ListItemText primary={`Produto ${item.product_id}, Quantidade: ${item.quantity}`} />
-              </ListItem>
-            ))
-          )}
-        </List>
-        {/* Botão flutuante para diminuir drawer*/}
-      <IconButton
-        onClick={toggleDrawer}
-        sx={{
-          position: 'fixed',
-          bottom: 20,
-          right: 20,
-          width: 60,
-          height: 60,
-          borderRadius: '50%',
-          boxShadow: 3,
-        }}
-      >
-        <ArrowForwardIcon fontSize="large" />
-      </IconButton>
-      </Drawer>
-
-      {/* Botão flutuante para expandir drawer */}
-      <IconButton
-        onClick={toggleDrawer}
-        sx={{
-          position: 'fixed',
-          bottom: 20,
-          right: 20,
-          backgroundColor: '#ff3d00',
-          color: 'white',
-          width: 60,
-          height: 60,
-          borderRadius: '50%',
-          boxShadow: 3,
-          '&:hover': { backgroundColor: '#d32f2f' },
-        }}
-      >
-        <Badge badgeContent={cart.length} color="secondary">
-          <ShoppingCartIcon fontSize="large" />
-        </Badge>
-      </IconButton>
+      {/* Carrinho como componente */}
+      <CartDrawer isOpen={isDrawerOpen} toggleDrawer={toggleDrawer} />
 
       {/* Conteúdo principal */}
       <Container maxWidth="lg">
