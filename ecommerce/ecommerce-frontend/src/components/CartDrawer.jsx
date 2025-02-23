@@ -4,8 +4,19 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useCart } from '../context/CartContext';
 
-function CartDrawer({ isOpen, toggleDrawer }) {
+function CartDrawer({ isOpen, toggleDrawer, products }) {
   const { cart } = useCart();
+
+  const cartItems = cart.map((cartItem) => {
+    const product = products.find((p) => p.id === cartItem.product_id);
+    return {
+      ...cartItem,
+      name: product ? product.name : "Produto não encontrado",
+      price: product ? product.price : 0,
+    };
+  });
+
+  
 
   return (
     <>
@@ -20,17 +31,17 @@ function CartDrawer({ isOpen, toggleDrawer }) {
       >
         <Typography variant="h6">Carrinho de Compras</Typography>
         <List>
-          {cart.length === 0 ? (
-            <ListItem>
-              <ListItemText primary="Carrinho vazio" />
-            </ListItem>
-          ) : (
-            cart.map((item, index) => (
-              <ListItem key={index}>
-                <ListItemText primary={`Produto ${item.product_id}, Quantidade: ${item.quantity}`} />
-              </ListItem>
-            ))
-          )}
+            {cartItems.length === 0 ? (
+                <ListItem>
+                <ListItemText primary="Carrinho vazio" />
+                </ListItem>
+            ) : (
+                cartItems.map((item, index) => (
+                <ListItem key={index}>
+                    <ListItemText primary={`${item.name} - ${item.quantity}x`} secondary={`R$ ${item.price*item.quantity}`} />
+                </ListItem>
+                ))
+            )}
         </List>
 
         {/* Botão para fechar o drawer */}

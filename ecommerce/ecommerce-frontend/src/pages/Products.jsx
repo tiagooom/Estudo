@@ -19,7 +19,7 @@ function Products() {
   return (
     <Box>
       {/* Carrinho como componente */}
-      <CartDrawer isOpen={isDrawerOpen} toggleDrawer={toggleDrawer} />
+      <CartDrawer isOpen={isDrawerOpen} toggleDrawer={toggleDrawer} products={products} />
 
       {/* Conteúdo principal */}
       <Container maxWidth="lg">
