@@ -20,9 +20,12 @@ export const AuthProvider = ({ children }) => {
             setUser(null);
           }
         } catch (error) {
+          if (error.response?.status === 401) {
+            localStorage.removeItem('authToken');
+            setUser(null);
+          }
           console.error('Erro ao carregar usuário:', error);
-          setUser(null);
-        }
+        }        
       } else {
         setUser(null);
       }
