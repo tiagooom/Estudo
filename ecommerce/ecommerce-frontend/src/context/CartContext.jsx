@@ -8,8 +8,7 @@ export const CartProvider = ({ children }) => {
 
   // Carrega o carrinho do backend se o usuário estiver autenticado
   const loadCart = async () => {
-    const token = localStorage.getItem('token');
-    
+    const token = localStorage.getItem('authToken');
     if (token) {
       try {
         const response = await api.get('/cart');
@@ -36,12 +35,12 @@ export const CartProvider = ({ children }) => {
   };
 
   const addToCart = async (productId, quantity = 1) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('authToken');
 
     if (token) {
       try {
         await api.post('/cart', { product_id: productId, quantity });
-        loadCart(); // Atualiza o carrinho após adicionar o produto
+        loadCart(); 
       } catch (error) {
         console.error("Erro ao adicionar ao carrinho:", error);
       }
@@ -63,7 +62,7 @@ export const CartProvider = ({ children }) => {
   };
 
   const decreaseQuantity = async (productId) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('authToken');
 
     if (token) {
       try {
@@ -87,7 +86,7 @@ export const CartProvider = ({ children }) => {
   };
 
   const removeFromCart = async (productId) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('authToken');
 
     if (token) {
       try {
@@ -105,8 +104,25 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+  const syncCart = async () => {
+    const token = localStorage.getItem('authToken');
+    const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    if (token && storedCart.length > 0) {
+        try {
+            await api.post('/cart/sync', { cart: storedCart });
+            loadCart();
+            console.log('Carrinho sincronizado');
+        } catch (error) {
+            console.error("Erro ao sincronizar o carrinho:", error);
+        }
+    } else {
+       loadCart();
+    }
+};
+
   const clearCart = async () => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('authToken');
 
     if (token) {
       try {
@@ -122,7 +138,7 @@ export const CartProvider = ({ children }) => {
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, decreaseQuantity, removeFromCart, clearCart }}>
+    <CartContext.Provider value={{ cart, addToCart, decreaseQuantity, removeFromCart, syncCart, clearCart }}>
       {children}
     </CartContext.Provider>
   );
