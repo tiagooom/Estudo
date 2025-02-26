@@ -9,10 +9,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useCart } from '../context/CartContext';
 
 function CartDrawer({ isOpen, toggleDrawer, products }) {
+  
   const { cart, addToCart, decreaseQuantity, removeFromCart, clearCart } = useCart();
-
+  
   const cartItems = cart.map((cartItem) => {
     const product = products.find((p) => p.id === cartItem.product_id);
+    
     return {
       ...cartItem,
       name: product ? product.name : "Produto não encontrado",
