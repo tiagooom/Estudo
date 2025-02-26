@@ -1,11 +1,13 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { login as authLogin, logout as authLogout, register as authRegister, getUser } from '../services/authService';
+import { useCart } from '../context/CartContext';
 import api from '../services/api';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const { clearCart, syncCart } = useCart();
 
   useEffect(() => {
     const loadUser = async () => {
@@ -41,6 +43,7 @@ export const AuthProvider = ({ children }) => {
         api.defaults.headers.Authorization = `Bearer ${response.token}`;
         const userData = await getUser();
         setUser(userData.user);
+        syncCart();
       }
     } catch (error) {
       console.error('Erro no login:', error);
@@ -70,6 +73,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.removeItem('authToken');
       delete api.defaults.headers.common['Authorization'];
       setUser(null);
+      clearCart();
     } catch (error) {
       console.error('Erro no logout:', error);
     }
