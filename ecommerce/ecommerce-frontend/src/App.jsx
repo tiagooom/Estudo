@@ -27,11 +27,11 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
-        <AuthProvider>
-          <CartProvider> 
+        <CartProvider>
+          <AuthProvider>
             <Layout />
-          </CartProvider>
-        </AuthProvider>
+          </AuthProvider>
+        </CartProvider>
       </Router>
     </ThemeProvider>
   );
