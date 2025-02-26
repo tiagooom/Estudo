@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -23,4 +24,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('products', ProductController::class)->except(['index', 'show']);;
         Route::apiResource('categories', CategoryController::class);
     });
+
+    //Rotas para carrinho
+    Route::get('/cart', [CartController::class, 'index']);
+    Route::post('/cart', [CartController::class, 'store']);
+    Route::post('/cart/sync', [CartController::class, 'sync']);
+    Route::put('/cart/decrease', [CartController::class, 'decreaseQuantity']);
+    Route::delete('/cart/clear', [CartController::class, 'clear']);
+    Route::delete('/cart/{product_id}', [CartController::class, 'destroy']);
 });
