@@ -3,7 +3,6 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid2';
 import Stack from '@mui/material/Stack';
 import Step from '@mui/material/Step';
@@ -18,6 +17,7 @@ import InfoMobile from '../components/checkout/InfoMobile';
 import PaymentForm from '../components/checkout/PaymentForm';
 import Review from '../components/checkout/Review';
 import AppTheme from '../shared-theme/AppTheme';
+import { useCart } from '../context/CartContext';
 
 const steps = ['Shipping address', 'Payment details', 'Review your order'];
 function getStepContent(step) {
@@ -34,6 +34,11 @@ function getStepContent(step) {
 }
 export default function Checkout(props) {
   const [activeStep, setActiveStep] = React.useState(0);
+
+  const { cart } = useCart();
+  
+  const total = cart.reduce((acc, item) => acc + Number(item.product.price) * Number(item.quantity), 0);
+
   const handleNext = () => {
     setActiveStep(activeStep + 1);
   };
@@ -79,7 +84,7 @@ export default function Checkout(props) {
               maxWidth: 500,
             }}
           >
-            <Info totalPrice={activeStep >= 2 ? '$144.97' : '$134.98'} />
+            <Info totalPrice={`R$ ${total.toFixed(2)}`} cartItems={cart} />;
           </Box>
         </Grid>
         <Grid
@@ -147,7 +152,7 @@ export default function Checkout(props) {
                   {activeStep >= 2 ? '$144.97' : '$134.98'}
                 </Typography>
               </div>
-              <InfoMobile totalPrice={activeStep >= 2 ? '$144.97' : '$134.98'} />
+              {/* <InfoMobile totalPrice={activeStep >= 2 ? '$144.97' : '$134.98'} /> */}
             </CardContent>
           </Card>
           <Box
