@@ -19,7 +19,8 @@ import Review from '../components/checkout/Review';
 import AppTheme from '../shared-theme/AppTheme';
 import { useCart } from '../context/CartContext';
 
-const steps = ['Shipping address', 'Payment details', 'Review your order'];
+const steps = ['Endereço', 'Pagamento', 'Revise seu pedido'];
+
 function getStepContent(step) {
   switch (step) {
     case 0:
@@ -40,10 +41,28 @@ export default function Checkout(props) {
   const total = cart.reduce((acc, item) => acc + Number(item.product.price) * Number(item.quantity), 0);
 
   const handleNext = () => {
+    
+    // Salvar os dados do AddressForm na sessão
+    const address = {
+      firstName: document.getElementById("first-name").value,
+      lastName: document.getElementById("last-name").value,
+      address: document.getElementById("address").value,
+      city: document.getElementById("city").value,
+      state: document.getElementById("state").value,
+      zip: document.getElementById("zip").value,
+      country: document.getElementById("country").value,
+    };
+
+    // Salvar os dados no sessionStorage
+    sessionStorage.setItem("addressData", JSON.stringify(address));
+
+    // Avançar para a próxima etapa
     setActiveStep(activeStep + 1);
   };
+
   const handleBack = () => {
-    setActiveStep(activeStep - 1);
+    window.location.reload();
+    setTimeout(() => setActiveStep(activeStep - 1), 10);
   };
   return (
     <AppTheme {...props}>
@@ -84,7 +103,7 @@ export default function Checkout(props) {
               maxWidth: 500,
             }}
           >
-            <Info totalPrice={`R$ ${total.toFixed(2)}`} cartItems={cart} />;
+            <Info totalPrice={`R$ ${total.toFixed(2)}`} cartItems={cart} />
           </Box>
         </Grid>
         <Grid
@@ -202,7 +221,7 @@ export default function Checkout(props) {
                   variant="contained"
                   sx={{ alignSelf: 'start', width: { xs: '100%', sm: 'auto' } }}
                 >
-                  Go to my orders
+                  Ir para meus pedidos
                 </Button>
               </Stack>
             ) : (
@@ -218,7 +237,7 @@ export default function Checkout(props) {
                       gap: 1,
                       pb: { xs: 12, sm: 0 },
                       mt: { xs: 2, sm: 0 },
-                      mb: '60px',
+                      mb: '130px',
                     },
                     activeStep !== 0
                       ? { justifyContent: 'space-between' }
@@ -232,7 +251,7 @@ export default function Checkout(props) {
                       variant="text"
                       sx={{ display: { xs: 'none', sm: 'flex' } }}
                     >
-                      Previous
+                      Anterior
                     </Button>
                   )}
                   {activeStep !== 0 && (
@@ -243,7 +262,7 @@ export default function Checkout(props) {
                       fullWidth
                       sx={{ display: { xs: 'flex', sm: 'none' } }}
                     >
-                      Previous
+                      Anterior
                     </Button>
                   )}
                   <Button
@@ -252,7 +271,7 @@ export default function Checkout(props) {
                     onClick={handleNext}
                     sx={{ width: { xs: '100%', sm: 'fit-content' } }}
                   >
-                    {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
+                    {activeStep === steps.length - 1 ? 'Fazer pedido' : 'Próximo'}
                   </Button>
                 </Box>
               </React.Fragment>
