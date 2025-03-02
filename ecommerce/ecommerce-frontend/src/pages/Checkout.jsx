@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -21,10 +21,10 @@ import { useCart } from '../context/CartContext';
 
 const steps = ['Endereço', 'Pagamento', 'Revise seu pedido'];
 
-function getStepContent(step) {
+function getStepContent(step, onNext, setIsValid)  {
   switch (step) {
     case 0:
-      return <AddressForm />;
+      return <AddressForm onNext={onNext} onValidate={setIsValid} />;
     case 1:
       return <PaymentForm />;
     case 2:
@@ -35,30 +35,27 @@ function getStepContent(step) {
 }
 export default function Checkout(props) {
   const [activeStep, setActiveStep] = React.useState(0);
+  const [onNext, setOnNext] = React.useState(false);
+  const [isValid, setIsValid] = React.useState(false);
 
   const { cart } = useCart();
   
   const total = cart.reduce((acc, item) => acc + Number(item.product.price) * Number(item.quantity), 0);
-
+  
   const handleNext = () => {
-    
-    // Salvar os dados do AddressForm na sessão
-    const address = {
-      firstName: document.getElementById("first-name").value,
-      lastName: document.getElementById("last-name").value,
-      address: document.getElementById("address").value,
-      city: document.getElementById("city").value,
-      state: document.getElementById("state").value,
-      zip: document.getElementById("zip").value,
-      country: document.getElementById("country").value,
-    };
-
-    // Salvar os dados no sessionStorage
-    sessionStorage.setItem("addressData", JSON.stringify(address));
-
-    // Avançar para a próxima etapa
-    setActiveStep(activeStep + 1);
+    setOnNext(true);
+  
+    setTimeout(() => {
+      setOnNext(false); // Reseta para permitir novas validações
+      setIsValid((prevValid) => {
+        if (prevValid) {
+          setActiveStep((prevStep) => prevStep + 1);
+        }
+        return prevValid;
+      });
+    }, 100); 
   };
+  
 
   const handleBack = () => {
     window.location.reload();
@@ -226,7 +223,7 @@ export default function Checkout(props) {
               </Stack>
             ) : (
               <React.Fragment>
-                {getStepContent(activeStep)}
+                {getStepContent(activeStep, onNext, setIsValid)}
                 <Box
                   sx={[
                     {
