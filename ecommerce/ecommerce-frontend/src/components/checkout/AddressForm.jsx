@@ -14,6 +14,10 @@ const FormGrid = styled(Grid)(() => ({
 const address = JSON.parse(sessionStorage.getItem("addressData")) || {};
 
 export default function AddressForm({ onNext, onValidate }) {
+  const [formData, setFormData] = useState(() => {
+    return JSON.parse(sessionStorage.getItem("addressData")) || {};
+  });
+
   const [firstNameError, setFirstNameError] = useState(false);
   const [firstNameErrorMessage, setFirstNameErrorMessage] = useState("");
   const [lastNameError, setLastNameError] = useState(false);
@@ -28,6 +32,7 @@ export default function AddressForm({ onNext, onValidate }) {
   const [zipErrorMessage, setZipErrorMessage] = useState("");
   const [countryError, setCountryError] = useState(false);
   const [countryErrorMessage, setCountryErrorMessage] = useState("");
+
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
   const addressRef = useRef(null);
@@ -36,83 +41,99 @@ export default function AddressForm({ onNext, onValidate }) {
   const zipRef = useRef(null);
   const countryRef = useRef(null);
 
-useEffect(() => {
-  if (onNext) {
-    let isValid = true;
+  useEffect(() => {
 
-    const name = firstNameRef.current?.value;
-    if (!name) {
-      setFirstNameError(true);
-      setFirstNameErrorMessage("Por favor, insira um nome válido.");
-      isValid = false;
-    } else {
-      setFirstNameError(false);
-      setFirstNameErrorMessage("");
+    setFormData(JSON.parse(sessionStorage.getItem("addressData")) || {}); //recarrega dados na pagina sempre
+
+    if (onNext) {
+      let isValid = true;
+
+      const name = firstNameRef.current?.value;
+      if (!name) {
+        setFirstNameError(true);
+        setFirstNameErrorMessage("Por favor, insira um nome válido.");
+        isValid = false;
+      } else {
+        setFirstNameError(false);
+        setFirstNameErrorMessage("");
+      }
+
+      const lastName = lastNameRef.current?.value;
+      if (!lastName) {
+        setLastNameError(true);
+        setLastNameErrorMessage("Por favor, insira um sobrenome válido.");
+        isValid = false;
+      } else {
+        setLastNameError(false);
+        setLastNameErrorMessage("");
+      }
+
+      const address = addressRef.current?.value;
+      if (!address) {
+        setAddressError(true);
+        setAddressErrorMessage("Por favor, insira um endereço válido.");
+        isValid = false;
+      } else {
+        setAddressError(false);
+        setAddressErrorMessage("");
+      }
+
+      const city = cityRef.current?.value;
+      if (!city) {
+        setCityError(true);
+        setCityErrorMessage("Por favor, insira uma cidade válida.");
+        isValid = false;
+      } else {
+        setCityError(false);
+        setCityErrorMessage("");
+      }
+
+      const state = stateRef.current?.value;
+      if (!state) {
+        setStateError(true);
+        setStateErrorMessage("Por favor, insira um estado válido.");
+        isValid = false;
+      } else {
+        setStateError(false);
+        setStateErrorMessage("");
+      }
+
+      const zip = zipRef.current?.value;
+      if (!zip) {
+        setZipError(true);
+        setZipErrorMessage("Por favor, insira um CEP válido.");
+        isValid = false;
+      } else {
+        setZipError(false);
+        setZipErrorMessage("");
+      }
+
+      const country = countryRef.current?.value;
+      if (!country) {
+        setCountryError(true);
+        setCountryErrorMessage("Por favor, insira um país válido.");
+        isValid = false;
+      } else {
+        setCountryError(false);
+        setCountryErrorMessage("");
+      }
+
+      if (isValid) {
+        const formData = {
+          firstName: firstNameRef.current.value,
+          lastName: lastNameRef.current.value,
+          address: addressRef.current.value,
+          city: cityRef.current.value,
+          state: stateRef.current.value,
+          zip: zipRef.current.value,
+          country: countryRef.current.value
+        };
+        sessionStorage.setItem("addressData", JSON.stringify(formData));
+      }
+
+      onValidate(isValid);
     }
-
-    const lastName = lastNameRef.current?.value;
-    if (!lastName) {
-      setLastNameError(true);
-      setLastNameErrorMessage("Por favor, insira um sobrenome válido.");
-      isValid = false;
-    } else {
-      setLastNameError(false);
-      setLastNameErrorMessage("");
-    }
-
-    const address = addressRef.current?.value;
-    if (!address) {
-      setAddressError(true);
-      setAddressErrorMessage("Por favor, insira um endereço válido.");
-      isValid = false;
-    } else {
-      setAddressError(false);
-      setAddressErrorMessage("");
-    }
-
-    const city = cityRef.current?.value;
-    if (!city) {
-      setCityError(true);
-      setCityErrorMessage("Por favor, insira uma cidade válida.");
-      isValid = false;
-    } else {
-      setCityError(false);
-      setCityErrorMessage("");
-    }
-
-    const state = stateRef.current?.value;
-    if (!state) {
-      setStateError(true);
-      setStateErrorMessage("Por favor, insira um estado válido.");
-      isValid = false;
-    } else {
-      setStateError(false);
-      setStateErrorMessage("");
-    }
-
-    const zip = zipRef.current?.value;
-    if (!zip) {
-      setZipError(true);
-      setZipErrorMessage("Por favor, insira um CEP válido.");
-      isValid = false;
-    } else {
-      setZipError(false);
-      setZipErrorMessage("");
-    }
-
-    const country = countryRef.current?.value;
-    if (!country) {
-      setCountryError(true);
-      setCountryErrorMessage("Por favor, insira um país válido.");
-      isValid = false;
-    } else {
-      setCountryError(false);
-      setCountryErrorMessage("");
-    }
-
-    onValidate(isValid);
-  }
-}, [onNext]);
+  }, [onNext]);
 
 
   return (
@@ -132,7 +153,7 @@ useEffect(() => {
           autoComplete="given-name"
           required
           size="small"
-          defaultValue={address.firstName || ""}
+          defaultValue={formData.firstName || ""}
           variant="outlined"
           color={firstNameError ? 'error' : 'primary'}
         />
@@ -152,7 +173,7 @@ useEffect(() => {
           autoComplete="family-name"
           required
           size="small"
-          defaultValue={address.lastName || ""}
+          defaultValue={formData.lastName || ""}
           variant="outlined"
           color={lastNameError ? 'error' : 'primary'}
         />
@@ -172,7 +193,7 @@ useEffect(() => {
           autoComplete="shipping address-line1"
           required
           size="small"
-          defaultValue={address.address || ""}
+          defaultValue={formData.address || ""}
           variant="outlined"
           color={addressError ? 'error' : 'primary'}
         />
@@ -192,7 +213,7 @@ useEffect(() => {
           autoComplete="address-level2"
           required
           size="small"
-          defaultValue={address.city || ""}
+          defaultValue={formData.city || ""}
           variant="outlined"
           color={cityError ? 'error' : 'primary'}
         />
@@ -212,7 +233,7 @@ useEffect(() => {
           autoComplete="address-level1"
           required
           size="small"
-          defaultValue={address.state || ""}
+          defaultValue={formData.state || ""}
           variant="outlined"
           color={stateError ? 'error' : 'primary'}
         />
@@ -232,7 +253,7 @@ useEffect(() => {
           autoComplete="postal-code"
           required
           size="small"
-          defaultValue={address.zip || ""}
+          defaultValue={formData.zip || ""}
           variant="outlined"
           color={zipError ? 'error' : 'primary'}
         />
@@ -252,7 +273,7 @@ useEffect(() => {
           autoComplete="country"
           required
           size="small"
-          defaultValue={address.country || ""}
+          defaultValue={formData.country || ""}
           variant="outlined"
           color={countryError ? 'error' : 'primary'}
         />
