@@ -58,8 +58,7 @@ export default function Checkout(props) {
   
 
   const handleBack = () => {
-    window.location.reload();
-    setTimeout(() => setActiveStep(activeStep - 1), 10);
+    setActiveStep(activeStep - 1)
   };
   return (
     <AppTheme {...props}>
