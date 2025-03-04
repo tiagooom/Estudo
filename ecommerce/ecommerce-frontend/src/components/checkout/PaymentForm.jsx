@@ -119,7 +119,7 @@ export default function PaymentForm() {
     <Stack spacing={{ xs: 3, sm: 6 }} useFlexGap>
       <FormControl component="fieldset" fullWidth>
         <RadioGroup
-          aria-label="Payment options"
+          aria-label="Opções de pagamento"
           name="paymentType"
           value={paymentType}
           onChange={handlePaymentTypeChange}
@@ -156,7 +156,7 @@ export default function PaymentForm() {
                     },
                   ]}
                 />
-                <Typography sx={{ fontWeight: 'medium' }}>Card</Typography>
+                <Typography sx={{ fontWeight: 'medium' }}>Cartão de crédito</Typography>
               </CardContent>
             </CardActionArea>
           </Card>
@@ -187,7 +187,7 @@ export default function PaymentForm() {
                     },
                   ]}
                 />
-                <Typography sx={{ fontWeight: 'medium' }}>Bank account</Typography>
+                <Typography sx={{ fontWeight: 'medium' }}>Conta bancária</Typography>
               </CardContent>
             </CardActionArea>
           </Card>
@@ -197,7 +197,7 @@ export default function PaymentForm() {
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <PaymentContainer>
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-              <Typography variant="subtitle2">Credit card</Typography>
+              <Typography variant="subtitle2">Cartão de crédito</Typography>
               <CreditCardRoundedIcon sx={{ color: 'text.secondary' }} />
             </Box>
             <SimCardRoundedIcon
@@ -217,7 +217,7 @@ export default function PaymentForm() {
             >
               <FormGrid sx={{ flexGrow: 1 }}>
                 <FormLabel htmlFor="card-number" required>
-                  Card number
+                  Número do cartão
                 </FormLabel>
                 <OutlinedInput
                   id="card-number"
@@ -247,24 +247,24 @@ export default function PaymentForm() {
             <Box sx={{ display: 'flex', gap: 2 }}>
               <FormGrid sx={{ flexGrow: 1 }}>
                 <FormLabel htmlFor="card-name" required>
-                  Name
+                  Nome
                 </FormLabel>
                 <OutlinedInput
                   id="card-name"
                   autoComplete="card-name"
-                  placeholder="John Smith"
+                  placeholder="João Silva"
                   required
                   size="small"
                 />
               </FormGrid>
               <FormGrid sx={{ flexGrow: 1 }}>
                 <FormLabel htmlFor="card-expiration" required>
-                  Expiration date
+                  Data de validade
                 </FormLabel>
                 <OutlinedInput
                   id="card-expiration"
                   autoComplete="card-expiration"
-                  placeholder="MM/YY"
+                  placeholder="MM/AA"
                   required
                   size="small"
                   value={expirationDate}
@@ -275,24 +275,24 @@ export default function PaymentForm() {
           </PaymentContainer>
           <FormControlLabel
             control={<Checkbox name="saveCard" />}
-            label="Remember credit card details for next time"
+            label="Lembrar os detalhes do cartão para a próxima vez"
           />
         </Box>
       )}
       {paymentType === 'bankTransfer' && (
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Alert severity="warning" icon={<WarningRoundedIcon />}>
-            Your order will be processed once we receive the funds.
+            Seu pedido será processado assim que recebermos os fundos.
           </Alert>
           <Typography variant="subtitle1" sx={{ fontWeight: 'medium' }}>
-            Bank account
+            Conta bancária
           </Typography>
           <Typography variant="body1" gutterBottom>
-            Please transfer the payment to the bank account details shown below.
+            Por favor, transfira o pagamento para os detalhes bancários abaixo.
           </Typography>
           <Box sx={{ display: 'flex', gap: 1 }}>
             <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-              Bank:
+              Banco:
             </Typography>
             <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
               Mastercredit
@@ -300,7 +300,7 @@ export default function PaymentForm() {
           </Box>
           <Box sx={{ display: 'flex', gap: 1 }}>
             <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-              Account number:
+              Número da conta:
             </Typography>
             <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
               123456789
@@ -308,7 +308,7 @@ export default function PaymentForm() {
           </Box>
           <Box sx={{ display: 'flex', gap: 1 }}>
             <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-              Routing number:
+              Número da agência:
             </Typography>
             <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
               987654321
