@@ -26,7 +26,7 @@ function getStepContent(step, onNext, setIsValid)  {
     case 0:
       return <AddressForm onNext={onNext} onValidate={setIsValid} />;
     case 1:
-      return <PaymentForm />;
+      return <PaymentForm onNext={onNext} onValidate={setIsValid} />;
     case 2:
       return <Review />;
     default:
@@ -46,14 +46,15 @@ export default function Checkout(props) {
     setOnNext(true);
   
     setTimeout(() => {
-      setOnNext(false); // Reseta para permitir novas validações
       setIsValid((prevValid) => {
         if (prevValid) {
           setActiveStep((prevStep) => prevStep + 1);
         }
         return prevValid;
       });
-    }, 100); 
+
+      setOnNext(false); // Reseta para permitir novas validações
+    }, 0); 
   };
   
 

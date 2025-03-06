@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import MuiCard from '@mui/material/Card';
@@ -17,6 +17,7 @@ import AccountBalanceRoundedIcon from '@mui/icons-material/AccountBalanceRounded
 import CreditCardRoundedIcon from '@mui/icons-material/CreditCardRounded';
 import SimCardRoundedIcon from '@mui/icons-material/SimCardRounded';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
+import FormHelperText from '@mui/material/FormHelperText';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   border: '1px solid',
@@ -82,11 +83,47 @@ const FormGrid = styled('div')(() => ({
   flexDirection: 'column',
 }));
 
-export default function PaymentForm() {
-  const [paymentType, setPaymentType] = React.useState('creditCard');
-  const [cardNumber, setCardNumber] = React.useState('');
-  const [cvv, setCvv] = React.useState('');
-  const [expirationDate, setExpirationDate] = React.useState('');
+export default function PaymentForm({ onNext, onValidate }) {
+  const savedPaymentData = JSON.parse(sessionStorage.getItem('paymentData')) || {};
+  const [paymentType, setPaymentType] = React.useState(savedPaymentData.paymentType || 'creditCard');
+  const [cardNumber, setCardNumber] = React.useState(savedPaymentData.cardNumber || '');
+  const [cvv, setCvv] = React.useState(savedPaymentData.cvv || '');
+  const [expirationDate, setExpirationDate] = React.useState(savedPaymentData.expirationDate || '');
+  const [cardName, setCardName] = React.useState(savedPaymentData.cardName || '');
+
+  const [errors, setErrors] = React.useState({});
+
+  const isValid = () => {
+    let newErrors = {};
+    if (paymentType === 'creditCard') {
+      if (!cardNumber || cardNumber.replace(/\s/g, '').length !== 16) {
+        newErrors.cardNumber = 'O número do cartão deve ter 16 dígitos.';
+      }
+      if (!cvv || !/^\d{3}$/.test(cvv)) { 
+        newErrors.cvv = 'CVV inválido';
+      }
+      if (!expirationDate || !/^\d{2}\/\d{2}$/.test(expirationDate)) { 
+        newErrors.expirationDate = 'Data de validade inválida';
+      }
+      if (!cardName.trim()) { 
+        newErrors.cardName = 'Nome no cartão é obrigatório';
+      }
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  useEffect(() => {
+    if (onNext) {
+      const valid = isValid();
+      onValidate(valid);
+      if (valid) {
+        const paymentData = { paymentType, cardNumber, cvv, expirationDate, cardName };
+        sessionStorage.setItem('paymentData', JSON.stringify(paymentData));
+        //preparar dados para api
+      }
+    }
+  }, [onNext, onValidate]);
 
   const handlePaymentTypeChange = (event) => {
     setPaymentType(event.target.value);
@@ -228,6 +265,7 @@ export default function PaymentForm() {
                   value={cardNumber}
                   onChange={handleCardNumberChange}
                 />
+                {errors.cardNumber && <FormHelperText error>{errors.cardNumber}</FormHelperText>}
               </FormGrid>
               <FormGrid sx={{ maxWidth: '20%' }}>
                 <FormLabel htmlFor="cvv" required>
@@ -242,20 +280,24 @@ export default function PaymentForm() {
                   value={cvv}
                   onChange={handleCvvChange}
                 />
+                {errors.cvv && <FormHelperText error>{errors.cvv}</FormHelperText>}
               </FormGrid>
             </Box>
             <Box sx={{ display: 'flex', gap: 2 }}>
               <FormGrid sx={{ flexGrow: 1 }}>
                 <FormLabel htmlFor="card-name" required>
-                  Nome
+                  Nome no cartão
                 </FormLabel>
                 <OutlinedInput
                   id="card-name"
                   autoComplete="card-name"
                   placeholder="João Silva"
                   required
+                  value={cardName}
+                  onChange={(e) => setCardName(e.target.value)}
                   size="small"
                 />
+                {errors.cardName && <FormHelperText error>{errors.cardName}</FormHelperText>}
               </FormGrid>
               <FormGrid sx={{ flexGrow: 1 }}>
                 <FormLabel htmlFor="card-expiration" required>
@@ -270,6 +312,7 @@ export default function PaymentForm() {
                   value={expirationDate}
                   onChange={handleExpirationDateChange}
                 />
+                {errors.expirationDate && <FormHelperText error>{errors.expirationDate}</FormHelperText>}
               </FormGrid>
             </Box>
           </PaymentContainer>
