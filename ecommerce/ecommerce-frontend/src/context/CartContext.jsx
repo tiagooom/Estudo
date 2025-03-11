@@ -6,6 +6,11 @@ const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 
+  const total = cart.reduce(
+    (acc, item) => acc + Number(item.product.price) * Number(item.quantity),
+    0
+  );
+
   // Carrega o carrinho do backend se o usuário estiver autenticado
   const loadCart = async () => {
     const token = localStorage.getItem('authToken');
@@ -138,7 +143,7 @@ export const CartProvider = ({ children }) => {
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, decreaseQuantity, removeFromCart, syncCart, clearCart }}>
+    <CartContext.Provider value={{ cart, addToCart, decreaseQuantity, removeFromCart, syncCart, clearCart, total }}>
       {children}
     </CartContext.Provider>
   );

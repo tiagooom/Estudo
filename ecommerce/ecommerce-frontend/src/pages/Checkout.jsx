@@ -38,9 +38,7 @@ export default function Checkout(props) {
   const [onNext, setOnNext] = React.useState(false);
   const [isValid, setIsValid] = React.useState(false);
 
-  const { cart } = useCart();
-  
-  const total = cart.reduce((acc, item) => acc + Number(item.product.price) * Number(item.quantity), 0);
+  const { cart, total } = useCart();
   
   const handleNext = () => {
     setOnNext(true);
