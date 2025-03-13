@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import MuiCard from '@mui/material/Card';
@@ -91,6 +91,8 @@ export default function PaymentForm({ onNext, onValidate }) {
   const [expirationDate, setExpirationDate] = React.useState(savedPaymentData.expirationDate || '');
   const [cardName, setCardName] = React.useState(savedPaymentData.cardName || '');
 
+  const [isCardSaved, setIsCardSaved] = React.useState(savedPaymentData.cardNumber ? true : false);
+  
   const [errors, setErrors] = React.useState({});
 
   const isValid = () => {
@@ -119,8 +121,10 @@ export default function PaymentForm({ onNext, onValidate }) {
       onValidate(valid);
       if (valid) {
         const paymentData = { paymentType, cardNumber, cvv, expirationDate, cardName };
-        sessionStorage.setItem('paymentData', JSON.stringify(paymentData));
-        //preparar dados para api
+        if (isCardSaved) { 
+          sessionStorage.setItem('paymentData', JSON.stringify(paymentData));
+          //preparar dados para api
+        }
       }
     }
   }, [onNext, onValidate]);
@@ -151,6 +155,26 @@ export default function PaymentForm({ onNext, onValidate }) {
       setExpirationDate(formattedValue);
     }
   };
+
+  const handleCheckboxChange = (event) => {
+    setIsCardSaved(event.target.checked);
+
+    if (!event.target.checked && Object.keys(savedPaymentData).length > 0) {
+      const confirmDelete = window.confirm('Você tem certeza que deseja apagar os dados do cartão?');
+
+      if (confirmDelete) {
+        // Limpa os campos quando o checkbox é desmarcado
+        setCardNumber('');
+        setCvv('');
+        setExpirationDate('');
+        setCardName('');
+        sessionStorage.removeItem('paymentData');
+      } else {
+        setIsCardSaved(true);
+      }
+    }
+  };
+  
 
   return (
     <Stack spacing={{ xs: 3, sm: 6 }} useFlexGap>
@@ -264,6 +288,7 @@ export default function PaymentForm({ onNext, onValidate }) {
                   size="small"
                   value={cardNumber}
                   onChange={handleCardNumberChange}
+                  disabled={isCardSaved && Object.keys(savedPaymentData).length > 0}
                 />
                 {errors.cardNumber && <FormHelperText error>{errors.cardNumber}</FormHelperText>}
               </FormGrid>
@@ -274,11 +299,12 @@ export default function PaymentForm({ onNext, onValidate }) {
                 <OutlinedInput
                   id="cvv"
                   autoComplete="CVV"
-                  placeholder="123"
+                  placeholder="000"
                   required
                   size="small"
                   value={cvv}
                   onChange={handleCvvChange}
+                  disabled={isCardSaved && Object.keys(savedPaymentData).length > 0}
                 />
                 {errors.cvv && <FormHelperText error>{errors.cvv}</FormHelperText>}
               </FormGrid>
@@ -291,11 +317,11 @@ export default function PaymentForm({ onNext, onValidate }) {
                 <OutlinedInput
                   id="card-name"
                   autoComplete="card-name"
-                  placeholder="João Silva"
                   required
                   value={cardName}
                   onChange={(e) => setCardName(e.target.value)}
                   size="small"
+                  disabled={isCardSaved && Object.keys(savedPaymentData).length > 0}
                 />
                 {errors.cardName && <FormHelperText error>{errors.cardName}</FormHelperText>}
               </FormGrid>
@@ -311,13 +337,14 @@ export default function PaymentForm({ onNext, onValidate }) {
                   size="small"
                   value={expirationDate}
                   onChange={handleExpirationDateChange}
+                  disabled={isCardSaved && Object.keys(savedPaymentData).length > 0}
                 />
                 {errors.expirationDate && <FormHelperText error>{errors.expirationDate}</FormHelperText>}
               </FormGrid>
             </Box>
           </PaymentContainer>
           <FormControlLabel
-            control={<Checkbox name="saveCard" />}
+            control={<Checkbox checked={isCardSaved} onChange={handleCheckboxChange} />}
             label="Lembrar os detalhes do cartão para a próxima vez"
           />
         </Box>
