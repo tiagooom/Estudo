@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from "react-route
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext"; 
+import { CheckoutProvider } from "./context/CheckoutContext"; 
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -29,7 +30,9 @@ function App() {
       <Router>
         <CartProvider>
           <AuthProvider>
-            <Layout />
+            <CheckoutProvider>
+              <Layout />
+            </CheckoutProvider>
           </AuthProvider>
         </CartProvider>
       </Router>

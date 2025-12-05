@@ -5,18 +5,17 @@ import FormLabel from '@mui/material/FormLabel';
 import Grid from '@mui/material/Grid2';
 import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
+import { useCheckout } from "../../context/CheckoutContext";
 
 const FormGrid = styled(Grid)(() => ({
   display: 'flex',
   flexDirection: 'column',
 }));
 
-const address = JSON.parse(sessionStorage.getItem("addressData")) || {};
-
 export default function AddressForm({ onNext, onValidate }) {
-  const [formData, setFormData] = useState(() => {
-    return JSON.parse(sessionStorage.getItem("addressData")) || {};
-  });
+  const { checkoutData, updateAddress } = useCheckout();
+
+  const [formData, setFormData] = useState(checkoutData.address || {});
 
   const [firstNameError, setFirstNameError] = useState(false);
   const [firstNameErrorMessage, setFirstNameErrorMessage] = useState("");
@@ -43,7 +42,7 @@ export default function AddressForm({ onNext, onValidate }) {
 
   useEffect(() => {
 
-    setFormData(JSON.parse(sessionStorage.getItem("addressData")) || {}); //recarrega dados na pagina sempre
+    setFormData(checkoutData.address || {});
 
     if (onNext) {
       let isValid = true;
@@ -128,12 +127,12 @@ export default function AddressForm({ onNext, onValidate }) {
           zip: zipRef.current.value,
           country: countryRef.current.value
         };
-        sessionStorage.setItem("addressData", JSON.stringify(formData));
+        updateAddress(formData);
       }
 
       onValidate(isValid);
     }
-  }, [onNext]);
+ }, [onNext, checkoutData.address]);
 
 
   return (
