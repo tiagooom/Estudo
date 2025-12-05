@@ -6,34 +6,44 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-
-const addresses = ['1 MUI Drive', 'Reactville', 'Anytown', '99999', 'USA'];
-const payments = [
-  { name: 'Card type:', detail: 'Visa' },
-  { name: 'Card holder:', detail: 'Mr. John Smith' },
-  { name: 'Card number:', detail: 'xxxx-xxxx-xxxx-1234' },
-  { name: 'Expiry date:', detail: '04/2024' },
-];
+import { useCart } from '../../context/CartContext';
 
 export default function Review() {
+  const address = JSON.parse(sessionStorage.getItem("addressData")) || [];
+  const savedPaymentData = JSON.parse(sessionStorage.getItem('paymentData')) || {};
+  console.log('teste: ', savedPaymentData);
+
+
+  const payments = [
+    { name: 'Tipo do cartão:', detail: 'Visa' },
+    { name: 'Titular do cartão:', detail: savedPaymentData.cardName },
+    { name: 'Número do cartão:', detail: savedPaymentData.cardNumber },
+    { name: 'Data de expiração:', detail: savedPaymentData.expirationDate },
+  ];
+
+  const { cart } = useCart();
+    
+  const total = cart.reduce((acc, item) => acc + Number(item.product.price) * Number(item.quantity), 0);
+
   return (
     <Stack spacing={2}>
       <List disablePadding>
         <ListItem sx={{ py: 1, px: 0 }}>
-          <ListItemText primary="Products" secondary="4 selected" />
-          <Typography variant="body2">$134.98</Typography>
+          <ListItemText primary="Produtos" secondary={`${cart.length} selecionados`} />
+          <Typography variant="body2">R$ { (total).toFixed(2) }</Typography>
         </ListItem>
         <ListItem sx={{ py: 1, px: 0 }}>
-          <ListItemText primary="Shipping" secondary="Plus taxes" />
-          <Typography variant="body2">$9.99</Typography>
+          <ListItemText primary="Frete" secondary="Mais impostos" />
+          <Typography variant="body2">R$ 9,99</Typography>
         </ListItem>
         <ListItem sx={{ py: 1, px: 0 }}>
           <ListItemText primary="Total" />
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            $144.97
+          R$ { (total+9.99).toFixed(2) }
           </Typography>
         </ListItem>
       </List>
+
       <Divider />
       <Stack
         direction="column"
@@ -43,16 +53,18 @@ export default function Review() {
       >
         <div>
           <Typography variant="subtitle2" gutterBottom>
-            Shipment details
+            Detalhes do envio
           </Typography>
-          <Typography gutterBottom>John Smith</Typography>
+          <Typography gutterBottom>{`${address.firstName || ''} ${address.lastName || ''}`.trim()}</Typography>
           <Typography gutterBottom sx={{ color: 'text.secondary' }}>
-            {addresses.join(', ')}
+            {[address.address, address.city, address.state, address.zip, address.country]
+              .filter(Boolean)
+              .join(', ')}
           </Typography>
         </div>
         <div>
           <Typography variant="subtitle2" gutterBottom>
-            Payment details
+            Detalhes do pagamento
           </Typography>
           <Grid container>
             {payments.map((payment) => (
