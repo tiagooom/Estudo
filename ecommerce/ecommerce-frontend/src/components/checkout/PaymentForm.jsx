@@ -288,7 +288,7 @@ export default function PaymentForm({ onNext, onValidate }) {
                   size="small"
                   value={cardNumber}
                   onChange={handleCardNumberChange}
-                  disabled={isCardSaved && Object.keys(savedPaymentData).length > 0}
+                  inputProps={{readOnly: isCardSaved && Object.keys(savedPaymentData).length > 0}}
                 />
                 {errors.cardNumber && <FormHelperText error>{errors.cardNumber}</FormHelperText>}
               </FormGrid>
@@ -304,7 +304,7 @@ export default function PaymentForm({ onNext, onValidate }) {
                   size="small"
                   value={cvv}
                   onChange={handleCvvChange}
-                  disabled={isCardSaved && Object.keys(savedPaymentData).length > 0}
+                  inputProps={{readOnly: isCardSaved && Object.keys(savedPaymentData).length > 0}}
                 />
                 {errors.cvv && <FormHelperText error>{errors.cvv}</FormHelperText>}
               </FormGrid>
@@ -321,7 +321,7 @@ export default function PaymentForm({ onNext, onValidate }) {
                   value={cardName}
                   onChange={(e) => setCardName(e.target.value)}
                   size="small"
-                  disabled={isCardSaved && Object.keys(savedPaymentData).length > 0}
+                  inputProps={{readOnly: isCardSaved && Object.keys(savedPaymentData).length > 0}}
                 />
                 {errors.cardName && <FormHelperText error>{errors.cardName}</FormHelperText>}
               </FormGrid>
@@ -337,7 +337,7 @@ export default function PaymentForm({ onNext, onValidate }) {
                   size="small"
                   value={expirationDate}
                   onChange={handleExpirationDateChange}
-                  disabled={isCardSaved && Object.keys(savedPaymentData).length > 0}
+                  inputProps={{readOnly: isCardSaved && Object.keys(savedPaymentData).length > 0}}
                 />
                 {errors.expirationDate && <FormHelperText error>{errors.expirationDate}</FormHelperText>}
               </FormGrid>
@@ -345,7 +345,11 @@ export default function PaymentForm({ onNext, onValidate }) {
           </PaymentContainer>
           <FormControlLabel
             control={<Checkbox checked={isCardSaved} onChange={handleCheckboxChange} />}
-            label="Lembrar os detalhes do cartão para a próxima vez"
+            label={
+              isCardSaved && Object.keys(savedPaymentData).length > 0
+                ? "Excluir cartao"
+                : "Lembrar os detalhes do cartão para a próxima vez"
+            }
           />
         </Box>
       )}
