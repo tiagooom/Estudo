@@ -11,8 +11,6 @@ import { useCart } from '../../context/CartContext';
 export default function Review() {
   const address = JSON.parse(sessionStorage.getItem("addressData")) || [];
   const savedPaymentData = JSON.parse(sessionStorage.getItem('paymentData')) || {};
-  console.log('teste: ', savedPaymentData);
-
 
   const payments = [
     { name: 'Tipo do cartão:', detail: 'Visa' },
