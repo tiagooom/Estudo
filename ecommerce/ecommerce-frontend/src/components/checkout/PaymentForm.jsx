@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import MuiCard from '@mui/material/Card';
@@ -18,6 +18,7 @@ import CreditCardRoundedIcon from '@mui/icons-material/CreditCardRounded';
 import SimCardRoundedIcon from '@mui/icons-material/SimCardRounded';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import FormHelperText from '@mui/material/FormHelperText';
+import { useCheckout } from "../../context/CheckoutContext";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   border: '1px solid',
@@ -84,15 +85,20 @@ const FormGrid = styled('div')(() => ({
 }));
 
 export default function PaymentForm({ onNext, onValidate }) {
-  const savedPaymentData = JSON.parse(sessionStorage.getItem('paymentData')) || {};
-  const [paymentType, setPaymentType] = React.useState(savedPaymentData.paymentType || 'creditCard');
-  const [cardNumber, setCardNumber] = React.useState(savedPaymentData.cardNumber || '');
-  const [cvv, setCvv] = React.useState(savedPaymentData.cvv || '');
-  const [expirationDate, setExpirationDate] = React.useState(savedPaymentData.expirationDate || '');
-  const [cardName, setCardName] = React.useState(savedPaymentData.cardName || '');
 
-  const [isCardSaved, setIsCardSaved] = React.useState(savedPaymentData.cardNumber ? true : false);
+  const { checkoutData, updatePayment } = useCheckout();
+
+  const [formData, setFormData] = useState(checkoutData.payment || {});
+
+  const [paymentType, setPaymentType] = useState(formData.paymentType || "creditCard");
+  const [cardNumber, setCardNumber] = useState(formData.cardNumber || "");
+  const [cvv, setCvv] = useState(formData.cvv || "");
+  const [expirationDate, setExpirationDate] = useState(formData.expirationDate || "");
+  const [cardName, setCardName] = useState(formData.cardName || "");
   
+  const [isCardSaved, setIsCardSaved] = useState(formData.isCardSaved || "");
+  
+
   const [errors, setErrors] = React.useState({});
 
   const isValid = () => {
@@ -120,9 +126,9 @@ export default function PaymentForm({ onNext, onValidate }) {
       const valid = isValid();
       onValidate(valid);
       if (valid) {
-        const paymentData = { paymentType, cardNumber, cvv, expirationDate, cardName };
+        const paymentData = { paymentType, cardNumber, cvv, expirationDate, cardName, isCardSaved };
+        updatePayment(paymentData);
         if (isCardSaved) { 
-          sessionStorage.setItem('paymentData', JSON.stringify(paymentData));
           //preparar dados para api
         }
       }
@@ -159,7 +165,7 @@ export default function PaymentForm({ onNext, onValidate }) {
   const handleCheckboxChange = (event) => {
     setIsCardSaved(event.target.checked);
 
-    if (!event.target.checked && Object.keys(savedPaymentData).length > 0) {
+    if (!event.target.checked && Object.keys(formData).length > 0 && false) { //ultimo condicional sera se houver token do cartao
       const confirmDelete = window.confirm('Você tem certeza que deseja apagar os dados do cartão?');
 
       if (confirmDelete) {
@@ -168,7 +174,6 @@ export default function PaymentForm({ onNext, onValidate }) {
         setCvv('');
         setExpirationDate('');
         setCardName('');
-        sessionStorage.removeItem('paymentData');
       } else {
         setIsCardSaved(true);
       }
@@ -288,7 +293,7 @@ export default function PaymentForm({ onNext, onValidate }) {
                   size="small"
                   value={cardNumber}
                   onChange={handleCardNumberChange}
-                  inputProps={{readOnly: isCardSaved && Object.keys(savedPaymentData).length > 0}}
+                  inputProps={{readOnly: isCardSaved && Object.keys(formData).length > 0}}
                 />
                 {errors.cardNumber && <FormHelperText error>{errors.cardNumber}</FormHelperText>}
               </FormGrid>
@@ -304,7 +309,7 @@ export default function PaymentForm({ onNext, onValidate }) {
                   size="small"
                   value={cvv}
                   onChange={handleCvvChange}
-                  inputProps={{readOnly: isCardSaved && Object.keys(savedPaymentData).length > 0}}
+                  inputProps={{readOnly: isCardSaved && Object.keys(formData).length > 0}}
                 />
                 {errors.cvv && <FormHelperText error>{errors.cvv}</FormHelperText>}
               </FormGrid>
@@ -321,7 +326,7 @@ export default function PaymentForm({ onNext, onValidate }) {
                   value={cardName}
                   onChange={(e) => setCardName(e.target.value)}
                   size="small"
-                  inputProps={{readOnly: isCardSaved && Object.keys(savedPaymentData).length > 0}}
+                  inputProps={{readOnly: isCardSaved && Object.keys(formData).length > 0}}
                 />
                 {errors.cardName && <FormHelperText error>{errors.cardName}</FormHelperText>}
               </FormGrid>
@@ -337,7 +342,7 @@ export default function PaymentForm({ onNext, onValidate }) {
                   size="small"
                   value={expirationDate}
                   onChange={handleExpirationDateChange}
-                  inputProps={{readOnly: isCardSaved && Object.keys(savedPaymentData).length > 0}}
+                  inputProps={{readOnly: isCardSaved && Object.keys(formData).length > 0}}
                 />
                 {errors.expirationDate && <FormHelperText error>{errors.expirationDate}</FormHelperText>}
               </FormGrid>
@@ -346,7 +351,7 @@ export default function PaymentForm({ onNext, onValidate }) {
           <FormControlLabel
             control={<Checkbox checked={isCardSaved} onChange={handleCheckboxChange} />}
             label={
-              isCardSaved && Object.keys(savedPaymentData).length > 0
+              isCardSaved && Object.keys(formData).length > 0
                 ? "Excluir cartao"
                 : "Lembrar os detalhes do cartão para a próxima vez"
             }

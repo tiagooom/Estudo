@@ -6,7 +6,14 @@ const CheckoutContext = createContext();
 export function CheckoutProvider({ children }) {
   const [checkoutData, setCheckoutData] = useState({
     address: {},
-    payment: {},
+    payment: {
+      paymentType: "creditCard",
+      cardNumber: "",
+      cvv: "",
+      expirationDate: "",
+      cardName: "",
+      isCardSaved: "",
+    },
   });
 
   const updateAddress = (data) => {
@@ -24,7 +31,7 @@ export function CheckoutProvider({ children }) {
   };
 
   return (
-    <CheckoutContext.Provider value={{ checkoutData, updateAddress, updatePayment }}>
+    <CheckoutContext.Provider value={{ checkoutData, updateAddress, updatePayment, }}>
       {children}
     </CheckoutContext.Provider>
   );
