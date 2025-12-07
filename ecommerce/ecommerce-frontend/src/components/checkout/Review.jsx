@@ -7,16 +7,16 @@ import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { useCart } from '../../context/CartContext';
+import { useCheckout } from "../../context/CheckoutContext";
 
 export default function Review() {
-  const address = JSON.parse(sessionStorage.getItem("addressData")) || [];
-  const savedPaymentData = JSON.parse(sessionStorage.getItem('paymentData')) || {};
+  const { checkoutData } = useCheckout();
 
   const payments = [
     { name: 'Tipo do cartão:', detail: 'Visa' },
-    { name: 'Titular do cartão:', detail: savedPaymentData.cardName },
-    { name: 'Número do cartão:', detail: savedPaymentData.cardNumber },
-    { name: 'Data de expiração:', detail: savedPaymentData.expirationDate },
+    { name: 'Titular do cartão:', detail: checkoutData.payment.cardName },
+    { name: 'Número do cartão:', detail: checkoutData.payment.cardNumber },
+    { name: 'Data de expiração:', detail: checkoutData.payment.expirationDate },
   ];
 
   const { cart } = useCart();
@@ -53,9 +53,9 @@ export default function Review() {
           <Typography variant="subtitle2" gutterBottom>
             Detalhes do envio
           </Typography>
-          <Typography gutterBottom>{`${address.firstName || ''} ${address.lastName || ''}`.trim()}</Typography>
+          <Typography gutterBottom>{`${checkoutData.address.firstName || ''} ${checkoutData.address.lastName || ''}`.trim()}</Typography>
           <Typography gutterBottom sx={{ color: 'text.secondary' }}>
-            {[address.address, address.city, address.state, address.zip, address.country]
+            {[checkoutData.address.address, checkoutData.address.city, checkoutData.address.state, checkoutData.address.zip, checkoutData.address.country]
               .filter(Boolean)
               .join(', ')}
           </Typography>
